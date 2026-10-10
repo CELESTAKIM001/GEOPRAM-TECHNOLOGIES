@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geopram Academy | Learn GIS, Earth Observation, data and web development</title>
+<meta name="description" content="Practical courses in QGIS, Google Earth Engine, remote sensing, ML and DL, databases, web development and M-PESA STK integration. Physical, live online and recorded, with certificates.">
+<meta name="theme-color" content="#E30613"><link rel="icon" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --red:#E30613; --red-d:#A8000B; --red-l:#FF3B46;
+  --ink:#11151B; --ink-2:#1B2129; --ink-3:#2A313B;
+  --slate:#5A6270; --mist:#F2F3F5; --line:#E1E4E8; --white:#fff;
+  --cut:clamp(14px,2.2vw,26px);
+  --dcut:clamp(28px,5vw,72px);
+  --wrap:1200px;
+  --display:"Bricolage Grotesque","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --body:"Instrument Sans","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--body);font-size:1.0625rem;line-height:1.6;color:var(--ink);background:var(--white);overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--display);margin:0;letter-spacing:-.025em;line-height:1.08}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+section[id]{scroll-margin-top:72px}
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:clamp(20px,5vw,48px)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--red-l);outline-offset:3px}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:#fff;padding:10px 16px;z-index:100}
+.skip:focus{top:12px}
+
+/* brand device: the cut corner, taken from the faceted G */
+.cut{clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,0 100%)}
+.cut-both{clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut))}
+
+/* buttons */
+.btn{--cut:12px;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;font:600 1rem/1 var(--body);text-decoration:none;border:0;cursor:pointer;
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%);transition:background .2s,color .2s,transform .2s}
+.btn--red{background:var(--red);color:#fff}
+.btn--red:hover{background:var(--red-d)}
+.btn--ink{background:var(--ink);color:#fff}
+.btn--ink:hover{background:var(--ink-3)}
+.btn--line{background:transparent;color:inherit;box-shadow:inset 0 0 0 2px currentColor}
+.btn--line:hover{background:rgba(127,127,127,.14)}
+.btn--white{background:#fff;color:var(--red-d)}
+.btn--white:hover{background:var(--ink);color:#fff}
+.btn:focus-visible{clip-path:none;outline:3px solid var(--red-l);outline-offset:3px}
+.btn:active{transform:translateY(1px)}
+
+/* header */
+.hdr{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid transparent;transition:border-color .2s,box-shadow .2s}
+.hdr.is-stuck{border-color:var(--line);box-shadow:0 6px 24px rgba(17,21,27,.06)}
+.hdr__in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+.hdr__logo img{height:40px;width:auto}
+.nav{display:flex;align-items:center;gap:clamp(14px,2vw,30px)}
+.nav a{white-space:nowrap;text-decoration:none;font-weight:500;font-size:.97rem;padding:8px 2px;position:relative}
+.nav a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .2s}
+.nav a:not(.btn):hover::after{transform:scaleX(1)}
+.nav .btn{min-height:44px;padding:0 20px;font-size:.95rem;color:#fff}
+.burger{display:none;width:46px;height:46px;border:0;background:var(--ink);cursor:pointer;padding:0;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);position:relative}
+.burger span,.burger span::before,.burger span::after{display:block;position:absolute;left:13px;width:20px;height:2px;background:#fff;transition:transform .2s,opacity .2s}
+.burger span{top:22px}.burger span::before,.burger span::after{content:"";left:0}
+.burger span::before{top:-6px}.burger span::after{top:6px}
+.burger[aria-expanded="true"] span{background:transparent}
+.burger[aria-expanded="true"] span::before{transform:translateY(6px) rotate(45deg)}
+.burger[aria-expanded="true"] span::after{transform:translateY(-6px) rotate(-45deg)}
+
+/* diagonal dark sections */
+.dark{position:relative;z-index:1;background:var(--ink);color:#fff;
+  clip-path:polygon(0 var(--dcut),100% 0,100% calc(100% - var(--dcut)),0 100%);
+  margin-block:calc(var(--dcut) * -1);
+  padding-block:calc(var(--dcut) + clamp(60px,8vw,112px))}
+.dark--top{clip-path:polygon(0 var(--dcut),100% 0,100% 100%,0 100%);margin-bottom:0;padding-bottom:clamp(60px,8vw,100px)}
+.dark__bg{position:absolute;inset:0;background:url(images/contours.svg) center/cover no-repeat;opacity:.13;pointer-events:none}
+.dark .wrap{position:relative}
+.light{padding-block:clamp(64px,9vw,120px)}
+.sec-head{max-width:46rem;margin-bottom:clamp(30px,4vw,52px)}
+.sec-head h2{font-size:clamp(1.95rem,4vw,3.2rem);font-weight:800;text-wrap:balance}
+.sec-head p{margin-top:16px;color:var(--slate);max-width:40em}
+.dark .sec-head p{color:#B7BEC9}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(28px,5vw,72px);align-items:start}
+.contact h2{font-size:clamp(2rem,4.4vw,3.5rem);font-weight:800;text-wrap:balance}
+.contact__lede{margin-top:16px;color:#B7BEC9;max-width:30em}
+.contact dl{margin:34px 0 0;display:grid;gap:18px}
+.contact dt{font-size:.88rem;color:#8993A1;font-weight:600}
+.contact dd{margin:2px 0 0;font-weight:500;font-size:1.08rem}
+.contact dd a{text-decoration:none;border-bottom:2px solid var(--red)}
+.contact dd a:hover{color:var(--red-l)}
+.form{background:#fff;color:var(--ink);padding:clamp(22px,3vw,36px);display:grid;gap:18px;
+  clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)}
+.form label{display:block;font-weight:600;font-size:.92rem;margin-bottom:6px}
+.form input,.form select,.form textarea{width:100%;border:2px solid var(--line);background:#fff;padding:13px 14px;font:400 1rem var(--body);color:var(--ink);border-radius:0;min-height:50px}
+.form textarea{min-height:130px;resize:vertical}
+.form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--ink)}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form small{color:var(--slate);font-size:.85rem}
+
+/* footer */
+.foot{background:var(--ink);color:#B7BEC9;padding:0 0 32px}
+.foot__in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:28px;padding-top:36px;border-top:1px solid var(--ink-3)}
+.foot img{height:38px;width:auto}
+.foot nav{display:flex;flex-wrap:wrap;gap:8px 24px}
+.foot nav a{text-decoration:none;font-weight:500;color:#fff}
+.foot nav a:hover{color:var(--red-l)}
+.foot__legal{width:100%;font-size:.88rem}
+
+
+.nav button.lnk{background:none;border:0;font:500 .97rem var(--body);cursor:pointer;padding:8px 2px}
+.ah{padding:clamp(36px,6vw,80px) 0 clamp(70px,9vw,120px);position:relative;overflow:hidden}
+.ah .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,60px);align-items:center}
+.ah h1{font-size:clamp(2.3rem,5.2vw,4.3rem);font-weight:800;letter-spacing:-.035em;line-height:1.02;text-wrap:balance}
+.ah h1 em{font-style:normal;color:var(--red)}
+.ah .cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+.mosaic{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mosaic img{width:100%;height:100%;object-fit:cover;aspect-ratio:1.3;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)}
+.mosaic img:first-child{grid-column:span 2;aspect-ratio:2.2}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.pills button{min-height:42px;padding:0 18px;border:0;background:var(--mist);font:600 .93rem var(--body);cursor:pointer;color:var(--ink)}
+.pills button[aria-pressed=true]{background:var(--ink);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.cc{background:var(--mist);display:flex;flex-direction:column;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)}
+.cc .im{height:130px;background:var(--ink) url(images/contours.svg) center/cover;position:relative}
+.cc .im img{width:100%;height:100%;object-fit:cover}
+.cc .tg{position:absolute;left:0;bottom:0;background:var(--red);color:#fff;font:600 .8rem var(--body);padding:5px 12px}
+.cc .tg.free{background:var(--ink)}
+.cc .bd{padding:18px 20px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.cc h3{font-size:1.2rem;font-weight:700}.cc p{color:var(--slate);font-size:.95rem}
+.cc small{color:var(--slate);font-size:.84rem}
+.cc .ft{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px}
+.cc .ft b{font:700 1.15rem var(--display)}
+.cc .btn{min-height:44px;padding:0 18px;font-size:.92rem}
+.bar{height:8px;background:var(--line)}.bar i{display:block;height:100%;background:var(--red)}
+.how{counter-reset:s;display:grid;gap:0;max-width:760px}
+.how li{counter-increment:s;display:grid;grid-template-columns:56px 1fr;gap:18px;padding:0 0 28px;position:relative}
+.how li::before{content:counter(s);width:52px;height:52px;display:grid;place-items:center;background:var(--red);color:#fff;font:700 1.2rem var(--display);clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%)}
+.how li::after{content:"";position:absolute;left:25px;top:56px;bottom:4px;width:2px;background:#3a424d}
+.how li:last-child::after{display:none}
+.how h3{font-size:1.25rem}.how p{color:#B7BEC9;margin-top:4px}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.box{background:var(--mist);padding:22px;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)}
+.box h3{font-size:1.15rem;margin-bottom:8px}.box p,.box li{color:#39414d;font-size:.96rem}
+.box li{padding:10px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}
+.box a.j{font-weight:600;color:var(--red-d);white-space:nowrap}
+.yt{display:block;text-decoration:none}.yt .pl{aspect-ratio:16/9;background:var(--ink);display:grid;place-items:center;margin-bottom:10px;background-image:url(images/contours.svg);background-size:cover}
+.yt .pl i{width:54px;height:38px;background:var(--red);clip-path:polygon(0 0,100% 0,100% 100%,0 100%);display:grid;place-items:center;color:#fff;font-style:normal}
+.gal{columns:3 240px;column-gap:14px}
+.gal button{display:block;width:100%;margin:0 0 14px;padding:0;border:0;background:var(--ink-2);cursor:zoom-in;position:relative}
+.gal img{width:100%}.gal span{position:absolute;left:0;bottom:0;right:0;padding:22px 12px 8px;color:#fff;font-size:.84rem;font-weight:600;text-align:left;background:linear-gradient(transparent,rgba(17,21,27,.9))}
+dialog{border:0;padding:0;width:min(560px,94vw);max-height:92vh;overflow:auto;color:var(--ink)}
+dialog::backdrop{background:rgba(17,21,27,.72)}
+.dl{padding:clamp(20px,3vw,32px);display:grid;gap:14px}
+.dl h3{font-size:1.5rem}.x{justify-self:end;border:0;background:var(--mist);width:40px;height:40px;cursor:pointer;font-size:1.3rem}
+.dl label{font-weight:600;font-size:.9rem;display:block;margin-bottom:5px}
+.dl input,.dl select,.dl textarea,.form input,.form select,.form textarea{width:100%;border:2px solid var(--line);padding:12px;font:400 1rem var(--body);min-height:48px;border-radius:0;color:var(--ink);background:#fff}
+.dl input:focus{outline:none;border-color:var(--ink)}
+.msg{color:var(--red-d);font-weight:600;font-size:.9rem;min-height:1.2em}.mut{color:var(--slate);font-size:.88rem}
+.dtabs{display:flex;gap:6px;flex-wrap:wrap;margin:22px 0}
+.dtabs button{min-height:46px;padding:0 20px;border:0;background:var(--mist);font:600 .95rem var(--body);cursor:pointer}
+.dtabs button[aria-pressed=true]{background:var(--red);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:22px}
+.stats div{background:var(--ink-2);padding:16px 18px}.stats b{display:block;font:800 2rem var(--display)}.stats span{color:#B7BEC9;font-size:.9rem}
+table{width:100%;border-collapse:collapse;font-size:.95rem}td,th{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line)}
+.lsn{display:grid;gap:6px}.lsn label{display:flex;gap:10px;align-items:center;padding:10px;background:var(--mist);margin:0;font-weight:500}
+.lsn input{width:20px;min-height:0;height:20px;accent-color:var(--red)}
+.vid{aspect-ratio:16/9;background:var(--ink);color:#B7BEC9;display:grid;place-items:center;text-align:center;padding:16px}.vid iframe{width:100%;height:100%;border:0}
+.pf-h{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:16px}.pf-h h3{font-size:1.6rem}.pf-h .btn{margin-left:auto}
+.av{flex:none;width:72px;height:72px;background:var(--red);color:#fff;display:grid;place-items:center;font:800 1.6rem var(--display);clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%)}
+.pf-d,.pf-f{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:22px 0 0}.pf-d>div{background:var(--mist);padding:14px 16px}.pf-d dt{font-size:.82rem;font-weight:600;color:var(--slate)}.pf-d dd{margin:4px 0 0;font-weight:500;overflow-wrap:anywhere}.pf-d .w,.pf-f .w{grid-column:1/-1}
+.pf-f label{font-weight:600;font-size:.9rem;display:block;margin-bottom:5px}.pf-f input,.pf-f select,.pf-f textarea{width:100%;border:2px solid var(--line);padding:12px;font:400 1rem var(--body);min-height:48px;border-radius:0;background:#fff;color:var(--ink)}.pf-f input:focus,.pf-f select:focus,.pf-f textarea:focus{outline:none;border-color:var(--ink)}
+.pf-b{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.pf-b .btn{min-width:150px}
+.nav a,.nav button.lnk,.nav .btn{white-space:nowrap}
+@media(max-width:860px){.dtabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;margin-inline:calc(-1*clamp(20px,5vw,48px));padding:0 clamp(20px,5vw,48px) 8px;scroll-snap-type:x proximity}.dtabs button{flex:0 0 auto;white-space:nowrap;scroll-snap-align:start}.pf-h .btn{margin-left:0;width:100%}.stats{grid-template-columns:1fr 1fr}.pf-b .btn{flex:1}}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:14px 22px;z-index:200;font-weight:600;max-width:92vw;display:none;border-left:6px solid var(--red)}
+[hidden]{display:none!important}
+@media(max-width:1020px){.ah .wrap,.contact{grid-template-columns:1fr}}
+@media(max-width:1100px){.burger{display:block}.nav{position:absolute;left:0;right:0;top:72px;flex-direction:column;align-items:stretch;gap:0;background:#fff;padding:8px 24px 22px;border-bottom:1px solid var(--line);display:none}.nav.is-open{display:flex}.nav a,.nav button.lnk{padding:14px 0;border-bottom:1px solid var(--line);text-align:left;font-size:1.05rem}.nav .btn{margin-top:14px}}
+@media(max-width:640px){.form .two{grid-template-columns:1fr}.ah .cta .btn{width:100%}}
+</style></head><body>
+<header class="hdr" id="hdr"><div class="wrap hdr__in">
+<a class="hdr__logo" href="#" data-go="top" aria-label="Geopram Academy home"><img src="images/geopram-logo.png" alt="Geopram Technologies" width="150" height="40"></a>
+<button class="burger" id="burger" aria-expanded="false" aria-label="Open menu"><span></span></button>
+<nav class="nav" id="nav" aria-label="Main">
+<a href="#courses" data-go="courses">Courses</a><a href="#how" data-go="how">How it works</a><a href="#free" data-go="free">Free learning</a><a href="#gallery" data-go="gallery">Gallery</a><a href="#request" data-go="request">Request a course</a>
+<a href="marketplace.html">Marketplace</a><span id="navAuth" style="display:contents"></span></nav></div></header>
+
+<main id="pub">
+<section class="ah"><div class="wrap"><div>
+<h1>Learn GIS, data and software by <em>building real projects.</em></h1>
+<p class="lede" style="margin-top:20px;max-width:34em;font-size:1.15rem;color:#39414d">Geopram Academy teaches QGIS, Earth Observation, machine learning, databases and web development. Join a class in person, learn live online, or watch recordings in your own time, then earn a certificate.</p>
+<div class="cta"><a class="btn btn--red" href="#courses" data-go="courses">Browse courses</a><a class="btn btn--line" href="#request" data-go="request">Request a course</a></div></div>
+<div class="mosaic" aria-hidden="true"><img src="images/01-satellite-imagery.jpg" alt=""><img src="images/09-canopy-height.jpg" alt=""><img src="images/07-elevation.jpg" alt=""></div></div></section>
+
+<section class="light" id="courses" style="padding-top:20px"><div class="wrap">
+<div class="sec-head"><h2>Courses</h2><p>Free courses unlock the moment you sign up. Paid courses open after an M-PESA STK Push payment.</p></div>
+<div class="pills" id="pills" role="group" aria-label="Filter courses"></div><div class="grid" id="cat"></div></div></section>
+
+<section class="dark" id="how"><div class="dark__bg" aria-hidden="true"></div><div class="wrap">
+<div class="sec-head"><h2>From first message to certificate</h2><p>Five steps. You can start at any of them.</p></div>
+<ol class="how" style="list-style:none;padding:0;margin:0">
+<li><div><h3>Choose or request a course</h3><p>Pick from the catalogue, or tell us what you need and we will build a class around it.</p></div></li>
+<li><div><h3>Pick how you learn</h3><p>Physical class by timetable (at our venue or yours), live online, or recorded lessons you watch whenever you like.</p></div></li>
+<li><div><h3>Register and pay</h3><p>Create your free account. Pay by M-PESA STK Push to unlock a course. Free courses open straight away.</p></div></li>
+<li><div><h3>Learn and practise</h3><p>Follow videos, do guided practicals and finish a mini project. Your dashboard tracks progress.</p></div></li>
+<li><div><h3>Get certified</h3><p>Complete every lesson and download your Geopram Academy certificate.</p></div></li></ol></div></section>
+
+<section class="light" id="free"><div class="wrap">
+<div class="sec-head"><h2>Free learning</h2><p>Free trainings, online events and YouTube lessons, open to everyone.</p></div>
+<div class="three"><div class="box"><h3>Free trainings</h3><p>Start with <b>Remote Sensing Fundamentals</b> or <b>SQL Basics</b>. Sign up and begin today.</p><p style="margin-top:14px"><a class="btn btn--ink" href="#courses" data-free>See free courses</a></p></div>
+<div class="box"><h3>Online events</h3><ul id="ev" style="list-style:none;padding:0;margin:0"></ul></div>
+<div class="box"><h3>YouTube videos</h3><ul id="yv" style="list-style:none;padding:0;margin:0"></ul></div></div></div></section>
+
+<section class="dark" id="gallery"><div class="dark__bg" aria-hidden="true"></div><div class="wrap">
+<div class="sec-head"><h2>Gallery</h2><p>Maps and research outputs from our projects and classes. Tap an image to enlarge.</p></div><div class="gal" id="gal"></div></div></section>
+
+<section class="dark dark--top" id="request" style="margin-top:0"><div class="dark__bg" aria-hidden="true"></div><div class="wrap contact">
+<div><h2 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:800">Request a course</h2><p class="contact__lede">Want a class at your school, office or community? Tell us the topic, the format and the dates that suit you. We will confirm the timetable.</p></div>
+<form class="form" id="rf" novalidate><div class="two"><div><label for="r1">Your name</label><input id="r1" required autocomplete="name"></div><div><label for="r2">Email or phone</label><input id="r2" required></div></div>
+<div class="two"><div><label for="r3">Course</label><select id="r3"></select></div><div><label for="r4">Format</label><select id="r4"><option>Physical class (by timetable)</option><option>Live online</option><option>Recorded</option></select></div></div>
+<div><label for="r5">Preferred dates, place and group size</label><textarea id="r5" style="min-height:100px"></textarea></div>
+<button class="btn btn--red" type="submit">Send request by email</button><small id="rh" class="mut">This opens your email app with the request ready to send.</small></form></div></section>
+</main>
+
+<main id="dash" hidden style="padding-bottom:80px"><section class="dark dark--top" style="clip-path:none;padding-top:44px;margin:0"><div class="dark__bg"></div><div class="wrap"><h2 id="hi" style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800"></h2><div class="stats" id="stats"></div></div></section>
+<div class="wrap"><div class="dtabs" id="dt"><button data-t="learn">My learning</button><button data-t="browse">All courses</button><button data-t="pay">Payments</button><button data-t="cert">Certificates</button></div><div id="dv"></div></div></main>
+
+<footer class="foot"><div class="wrap"><div class="foot__in"><img src="images/geopram-logo-light.png" alt="Geopram Technologies" width="140" height="38"><nav aria-label="Footer"><a href="#courses" data-go="courses">Courses</a><a href="#free" data-go="free">Free learning</a><a href="#gallery" data-go="gallery">Gallery</a><a href="#request" data-go="request">Request a course</a></nav><p class="foot__legal">&copy; <span id="yr">2026</span> Geopram Academy, part of Geopram Technologies, Nyeri, Kenya.</p></div></div></footer>
+
+<dialog id="authD"><div class="dl"><button class="x" data-close aria-label="Close">&times;</button><h3 id="aT"></h3><form id="af" style="display:grid;gap:14px" novalidate>
+<div data-up><label for="a1">Full name</label><input id="a1" autocomplete="name"></div><div data-up><label for="a5">I want to</label><select id="a5"><option value="learner">Learn (student)</option><option value="tutor">Teach (tutor)</option></select></div><div data-up><label for="a2">M-PESA phone</label><input id="a2" type="tel" placeholder="07XX XXX XXX" autocomplete="tel"></div>
+<div><label for="a3">Email</label><input id="a3" type="email" autocomplete="email"></div><div><label for="a4">Password (6+ characters)</label><input id="a4" type="password" autocomplete="current-password"></div>
+<div class="msg" id="aM" role="alert"></div><button class="btn btn--red" id="aB" type="submit"></button></form>
+<p class="mut"><button class="lnk" id="aS" style="background:none;border:0;color:var(--red-d);font-weight:600;cursor:pointer;padding:0;font-size:inherit"></button></p>
+<p class="mut">Prototype: accounts are stored in this browser only. Connect a backend before going live.</p></div></dialog>
+<dialog id="payD"><div class="dl"><button class="x" data-close aria-label="Close">&times;</button><div id="pB"></div></div></dialog>
+<dialog id="plD" style="width:min(720px,94vw)"><div class="dl"><button class="x" data-close aria-label="Close">&times;</button><div id="plB"></div></div></dialog>
+<dialog id="lbD" style="width:min(960px,96vw);background:var(--ink);color:#fff"><div class="dl"><button class="x" data-close aria-label="Close">&times;</button><img id="lbI" alt=""><p id="lbC"></p></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ===== EDIT ME: courses, prices (KES), events, videos ===== */
+const CFG={email:'celestakim018@gmail.com',
+cats:{gis:'GIS & Earth Observation',ai:'Data & AI',web:'Web & software'},
+courses:[
+{id:'qgis',t:'QGIS Essentials',c:'gis',p:3000,d:'4 weeks',b:'Digitise, analyse and lay out maps in free, open-source QGIS.',i:'10-vector-map'},
+{id:'gee',t:'Google Earth Engine',c:'gis',p:5000,d:'5 weeks',b:'Process satellite time series in the cloud with JavaScript and Python.',i:'01-satellite-imagery'},
+{id:'rs',t:'Remote Sensing Fundamentals',c:'gis',p:0,d:'3 weeks',b:'How satellites see land, water and vegetation, and how to read the pixels.',i:'06-spectral-index'},
+{id:'map',t:'Map Making and Cartography',c:'gis',p:2500,d:'2 weeks',b:'Design clear maps and posters people want to read and share.',i:'03-building-types'},
+{id:'ml',t:'Machine Learning for Remote Sensing',c:'ai',p:6000,d:'6 weeks',b:'Classify land cover and model change with random forest and neural networks.',i:'02-land-cover'},
+{id:'dl',t:'Deep Learning for Earth Observation',c:'ai',p:8000,d:'6 weeks',b:'Segment and detect features in imagery with convolutional networks.',i:'08-vegetation-health'},
+{id:'py',t:'Python for GIS',c:'ai',p:4000,d:'4 weeks',b:'Automate spatial work with GeoPandas, rasterio and Jupyter.',i:'09-canopy-height'},
+{id:'sql',t:'SQL Basics',c:'web',p:0,d:'2 weeks',b:'Query, filter and join data with confidence.'},
+{id:'pg',t:'PostgreSQL and PostGIS',c:'web',p:4000,d:'4 weeks',b:'Design spatial databases, write queries and serve data to maps.'},
+{id:'web',t:'Web Development: HTML and CSS',c:'web',p:3500,d:'4 weeks',b:'Build responsive websites from scratch, step by step.'},
+{id:'dep',t:'Deployment and Hosting',c:'web',p:3000,d:'2 weeks',b:'Put your site or app online with domains, hosting and SSL.'},
+{id:'stk',t:'M-PESA STK Push Integration',c:'web',p:5000,d:'3 weeks',b:'Accept payments in your own platform, including callbacks and receipts.'}],
+events:[{t:'Intro to QGIS (online)',d:'Date announced soon',u:''},{t:'Earth Engine live Q&A',d:'Date announced soon',u:''}],
+videos:[{t:'QGIS in 20 minutes',id:''},{t:'Your first Earth Engine script',id:''},{t:'What is remote sensing?',id:''}],
+lessonVideo:{}, /* e.g. {qgis:'YOUTUBE_ID'} */
+gallery:[['01-satellite-imagery','Very high-resolution imagery'],['02-land-cover','Land cover classification'],['04-surface-heat','Surface heat map'],['07-elevation','Elevation model'],['09-canopy-height','Tree canopy height'],['10-vector-map','Vector map of buildings and roads'],['05-roof-heat-exposure','Roof heat exposure'],['08-vegetation-health','Vegetation health']]};
+const LES=['Orientation and setup','Core concepts','Guided practical','Mini project','Assessment'];
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const jget=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??d}catch(e){return d}},jset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const kes=n=>n?'KES '+n.toLocaleString('en-KE'):'Free';
+const all=()=>[...CFG.courses,...jget('gp_courses',[])],cr=id=>all().find(c=>c.id===id);
+const lessons=c=>c.ls&&c.ls.length?c.ls:LES.map(t=>({t,v:CFG.lessonVideo[c.id]||''}));
+let me=jget('gp_me',null),pend=null,flt='all';
+const dat=()=>jget('gp_d_'+me.email,{en:{},pay:[]}),save=d=>jset('gp_d_'+me.email,d);
+async function hash(s){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return btoa(s)}}
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3500)}
+$$('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
+$$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
+$('#yr').textContent=new Date().getFullYear();
+
+/* header + navigation */
+const nav=$('#nav'),burger=$('#burger');
+burger.onclick=()=>{const o=nav.classList.toggle('is-open');burger.setAttribute('aria-expanded',o)};
+addEventListener('scroll',()=>$('#hdr').classList.toggle('is-stuck',scrollY>8),{passive:true});
+function pub(id){$('#dash').hidden=true;$('#pub').hidden=false;nav.classList.remove('is-open');const e=id==='top'?document.body:document.getElementById(id);setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),30)}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){e.preventDefault();pub(g.dataset.go)}if(e.target.closest('[data-free]')){flt='free';drawCat()}});
+function drawNav(){$('#navAuth').innerHTML=me?'<button class="lnk" id="goD">My dashboard</button><button class="btn btn--ink" id="out">Log out</button>':'<button class="lnk" id="inB">Log in</button><button class="btn btn--red" id="upB">Sign up free</button>';
+ if(me){$('#goD').onclick=()=>dash('learn');$('#out').onclick=()=>{me=null;jset('gp_me',null);drawNav();pub('top');toast('You are logged out.')}}else{$('#inB').onclick=()=>auth('in');$('#upB').onclick=()=>auth('up')}}
+
+/* catalogue */
+function card(c,mode){const en=me&&dat().en[c.id],pr=en?Math.round(en.done.length/lessons(c).length*100):0;
+ return `<article class="cc"><div class="im">${c.i?`<img src="images/${c.i}.jpg" alt="" loading="lazy">`:''}<span class="tg ${c.p?'':'free'}">${esc(CFG.cats[c.c])}</span></div><div class="bd"><h3>${esc(c.t)}</h3><p>${esc(c.b)}</p>${c.by?'<small>Tutor: '+esc(c.by)+'</small>':''}<small>${c.d} · ${c.p?'Physical, live online or recorded':'Online and recorded'}</small>
+ ${en?`<div class="bar"><i style="width:${pr}%"></i></div><small>${pr}% complete</small>`:''}
+ <div class="ft"><b>${kes(c.p)}</b><button class="btn ${en?'btn--ink':'btn--red'}" data-en="${c.id}">${en?'Open course':c.p?'Enrol':'Start free'}</button></div></div></article>`}
+function drawCat(){$('#pills').innerHTML=[['all','All'],['free','Free'],...Object.entries(CFG.cats)].map(([k,v])=>`<button aria-pressed="${flt===k}" data-f="${k}">${v}</button>`).join('');
+ $('#cat').innerHTML=all().filter(c=>flt==='all'||(flt==='free'?!c.p:c.c===flt)).map(c=>card(c)).join('')}
+$('#pills').onclick=e=>{const b=e.target.closest('[data-f]');if(b){flt=b.dataset.f;drawCat()}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-en]');if(b)enrol(b.dataset.en)});
+$('#r3').innerHTML=CFG.courses.map(c=>`<option>${esc(c.t)}</option>`).join('')+'<option>Something else</option>';
+
+/* free learning + gallery */
+$('#ev').innerHTML=CFG.events.map(v=>`<li><span><b>${esc(v.t)}</b><br><small>${esc(v.d)}</small></span>${v.u?`<a class="j" href="${esc(v.u)}" target="_blank" rel="noopener">Join</a>`:'<a class="j" href="#request" data-go="request">Get link</a>'}</li>`).join('');
+$('#yv').innerHTML=CFG.videos.map(v=>`<li><span><b>${esc(v.t)}</b></span>${v.id?`<a class="j" href="https://www.youtube.com/watch?v=${esc(v.id)}" target="_blank" rel="noopener">Watch</a>`:'<small>Coming soon</small>'}</li>`).join('');
+$('#gal').innerHTML=CFG.gallery.map(([f,c])=>`<button data-lb="${f}" data-c="${esc(c)}"><img src="images/${f}.jpg" alt="${esc(c)}" loading="lazy"><span>${esc(c)}</span></button>`).join('');
+$('#gal').onclick=e=>{const b=e.target.closest('[data-lb]');if(!b)return;$('#lbI').src='images/'+b.dataset.lb+'.jpg';$('#lbI').alt=b.dataset.c;$('#lbC').textContent=b.dataset.c;$('#lbD').showModal()};
+
+/* request form */
+$('#rf').onsubmit=e=>{e.preventDefault();const n=$('#r1').value.trim(),c=$('#r2').value.trim();if(!n||!c){$('#rh').textContent='Please add your name and an email or phone number.';$('#rh').style.color='#A8000B';return}
+ location.href='mailto:'+CFG.email+'?subject='+encodeURIComponent('Course request: '+$('#r3').value)+'&body='+encodeURIComponent(`Name: ${n}\nContact: ${c}\nCourse: ${$('#r3').value}\nFormat: ${$('#r4').value}\n\n${$('#r5').value}`)};
+
+/* auth */
+let amode='up';
+function auth(m){amode=m;$('#nav').classList.remove('is-open');$('#burger').setAttribute('aria-expanded','false');$('#aT').textContent=m==='up'?'Create your free account':'Welcome back';$('#aB').textContent=m==='up'?'Sign up':'Log in';$('#aS').textContent=m==='up'?'Already registered? Log in':'New here? Create an account';$$('[data-up]').forEach(x=>x.hidden=m!=='up');$('#aM').textContent='';$('#authD').showModal()}
+$('#aS').onclick=()=>auth(amode==='up'?'in':'up');
+$('#af').onsubmit=async e=>{e.preventDefault();const em=$('#a3').value.trim().toLowerCase(),pw=$('#a4').value,M=$('#aM'),U=jget('gp_users',{});
+ if(!/^\S+@\S+\.\S+$/.test(em))return M.textContent='Enter a valid email address.';if(pw.length<6)return M.textContent='Use a password with at least 6 characters.';
+ const h=await hash(pw);
+ if(amode==='up'){const n=$('#a1').value.trim(),ph=$('#a2').value.trim();if(!n||!/^(\+?254|0)\d{9}$/.test(ph.replace(/\s/g,'')))return M.textContent='Add your name and a valid Kenyan phone number.';if(U[em])return M.textContent='That email is already registered. Please log in.';U[em]={n,ph,h,role:$('#a5').value,since:Date.now()};jset('gp_users',U)}
+ else if(!U[em]||U[em].h!==h)return M.textContent='Email or password is incorrect.';
+ me={email:em,n:U[em].n,ph:U[em].ph,role:U[em].role||'learner'};jset('gp_me',me);$('#authD').close();$('#af').reset();drawNav();drawCat();toast('Welcome, '+me.n.split(' ')[0]+'!');
+ if(pend){const p=pend;pend=null;enrol(p)}else dash(me.role==='tutor'?'mine':'learn')};
+
+/* enrol + pay */
+function grant(id,amt,rc){const d=dat();d.en[id]=d.en[id]||{done:[],date:Date.now()};if(amt)d.pay.push({id,amt,rc,date:Date.now()});save(d);drawCat()}
+function enrol(id){if(!me){pend=id;return auth('up')}const c=cr(id),d=dat();if(c.o===me.email||d.en[id])return play(id);if(!c.p){grant(id,0);toast('You are enrolled in '+c.t+'.');return dash('learn')}pay(id)}
+function pay(id){const c=cr(id);$('#pB').innerHTML=`<h3>Pay for ${esc(c.t)}</h3><p class="mut">You will get an M-PESA prompt on your phone. Enter your PIN to approve.</p><div class="box" style="padding:14px"><b>${kes(c.p)}</b> to Geopram Technologies</div><div><label for="p1">M-PESA number</label><input id="p1" type="tel" value="${esc(me.ph||'')}"></div><button class="btn btn--red" id="p2">Send STK Push</button><p class="mut">Demo mode: no real payment is taken. A live version needs your Daraja credentials and a server callback.</p>`;
+ $('#payD').showModal();$('#p2').onclick=()=>{$('#pB').innerHTML=`<h3>Check your phone</h3><p>Approve KES ${c.p.toLocaleString()} for ${esc(c.t)}.</p><div class="vid" style="min-height:90px">Waiting for confirmation…</div><button class="btn btn--red" id="p3">Simulate entering PIN</button>`;
+ $('#p3').onclick=()=>{const rc='S'+Math.random().toString(36).slice(2,11).toUpperCase();grant(id,c.p,rc);$('#pB').innerHTML=`<h3>Payment received</h3><p>Receipt <b>${rc}</b>. ${esc(c.t)} is now unlocked.</p><button class="btn btn--red" id="p4">Start learning</button>`;$('#p4').onclick=()=>{$('#payD').close();dash('learn')}}}}
+
+/* course player */
+function play(id){const c=cr(id),d=dat(),en=d.en[id];let cur=0;
+ const draw=()=>{const done=en.done,all=done.length===LES.length,v=CFG.lessonVideo[id];
+ $('#plB').innerHTML=`<h3>${esc(c.t)}</h3><div class="vid">${v?`<iframe src="https://www.youtube-nocookie.com/embed/${esc(v)}" title="Lesson video" allowfullscreen></iframe>`:`<div><b>Lesson ${cur+1}: ${LES[cur]}</b><br>Add this lesson's video link in CFG.lessonVideo.</div>`}</div>
+ <div class="bar"><i style="width:${done.length/LES.length*100}%"></i></div><div class="lsn">${LES.map((l,i)=>`<label><input type="checkbox" data-l="${i}" ${done.includes(i)?'checked':''}> ${i+1}. ${l}</label>`).join('')}</div>
+ ${all?'<button class="btn btn--red" id="gc">Get your certificate</button>':'<p class="mut">Tick each lesson as you finish. Complete all five to earn your certificate.</p>'}`;
+ $$('[data-l]',$('#plB')).forEach(x=>x.onchange=()=>{const i=+x.dataset.l;cur=i;en.done=x.checked?[...new Set([...en.done,i])]:en.done.filter(k=>k!==i);const dd=dat();dd.en[id]=en;save(dd);draw();drawCat()});
+ if(all)$('#gc').onclick=()=>cert(id)};draw();$('#plD').showModal();$('#plD').onclose=()=>{if(!$('#dash').hidden)dash(curTab)}}
+function cert(id){const c=cr(id),w=open('','_blank');if(!w)return toast('Allow pop-ups to open your certificate.');
+ w.document.write(`<title>Certificate</title><body style="font-family:Georgia,serif;text-align:center;padding:60px;border:14px solid #E30613;margin:20px"><img src="${new URL('images/geopram-logo.png',location.href)}" height="60"><h1 style="font-size:44px;margin:30px 0 6px">Certificate of Completion</h1><p>This certifies that</p><h2 style="font-size:36px;margin:10px">${esc(me.n)}</h2><p>has successfully completed</p><h2 style="font-size:28px">${esc(c.t)}</h2><p>Geopram Academy, Geopram Technologies · ${new Date().toLocaleDateString('en-KE',{dateStyle:'long'})}</p><script>setTimeout(()=>print(),400)<\/script>`);w.document.close()}
+
+/* dashboard */
+let curTab='learn';
+function dash(t){curTab=t;$('#pub').hidden=true;$('#dash').hidden=false;nav.classList.remove('is-open');scrollTo(0,0);const d=dat(),ids=Object.keys(d.en),done=ids.filter(i=>d.en[i].done.length===LES.length);
+ $('#hi').textContent='Hello, '+me.n.split(' ')[0];
+ $('#stats').innerHTML=[[ids.length,'Courses enrolled'],[ids.reduce((a,i)=>a+d.en[i].done.length,0),'Lessons completed'],[done.length,'Certificates'],[kes(d.pay.reduce((a,p)=>a+p.amt,0))||'Free','Paid so far']].map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('');
+ $$('#dt button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===t));
+ let h='';
+ if(t==='learn')h=ids.length?`<div class="grid">${ids.map(i=>card(cr(i))).join('')}</div>`:`<p>You have not enrolled yet. <a href="#" data-t2="browse" style="color:var(--red-d);font-weight:600">Find a course</a>, or start with a free one.</p>`;
+ if(t==='browse')h=`<div class="grid">${all().map(c=>card(c)).join('')}</div>`;
+ if(t==='pay')h=d.pay.length?`<table><tr><th>Date</th><th>Course</th><th>Amount</th><th>Receipt</th></tr>${d.pay.map(p=>`<tr><td>${new Date(p.date).toLocaleDateString('en-KE')}</td><td>${esc(cr(p.id).t)}</td><td>${kes(p.amt)}</td><td>${p.rc}</td></tr>`).join('')}</table>`:'<p>No payments yet. Free courses never need one.</p>';
+ if(t==='cert')h=done.length?`<div class="grid">${done.map(i=>`<div class="box"><h3>${esc(cr(i).t)}</h3><p>Completed</p><p style="margin-top:12px"><button class="btn btn--red" data-ct="${i}">Download certificate</button></p></div>`).join('')}</div>`:'<p>Finish all five lessons of a course to earn your certificate.</p>';
+ $('#dv').innerHTML=h}
+$('#dt').onclick=e=>{const b=e.target.closest('[data-t]');if(b){window._pe=false;dash(b.dataset.t)}};
+$('#dv').addEventListener('click',e=>{const a=e.target.closest('[data-t2]');if(a){e.preventDefault();dash(a.dataset.t2)}const c=e.target.closest('[data-ct]');if(c)cert(c.dataset.ct)});
+drawNav();drawCat();
+</script>
+<script>
+/* ===== roles, tutor dashboard, lesson videos, timetable, profile ===== */
+const TS=70,isT=()=>me&&me.role==='tutor';
+const ytid=s=>{s=(s||'').trim();const m=s.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/);return m?m[1]:/^[\w-]{11}$/.test(s)?s:''};
+const users=()=>jget('gp_users',{}),myC=()=>jget('gp_courses',[]).filter(c=>c.o===me.email);
+const pc=(x,c)=>Math.round(x.done.length/lessons(c).length*100);
+function play(id){const c=cr(id),d=dat(),prev=!d.en[id],en=d.en[id]||{done:[]},L=lessons(c);let cur=0;
+ const draw=()=>{const done=en.done,v=ytid(L[cur].v),all=done.length===L.length;
+ $('#plB').innerHTML=`<h3>${esc(c.t)}</h3>${c.by?`<p class="mut">Tutor: ${esc(c.by)}${prev?' · Preview':''}</p>`:''}<div class="vid">${v?`<iframe src="https://www.youtube-nocookie.com/embed/${v}" title="Lesson video" allowfullscreen></iframe>`:`<div><b>Lesson ${cur+1}: ${esc(L[cur].t)}</b><br>No video added for this lesson yet.</div>`}</div>
+ <div class="bar"><i style="width:${done.length/L.length*100}%"></i></div><div class="lsn">${L.map((l,i)=>`<label ${i===cur?'style="outline:2px solid var(--red)"':''}><input type="checkbox" data-l="${i}" ${done.includes(i)?'checked':''} ${prev?'disabled':''}> <span style="flex:1">${i+1}. ${esc(l.t)}</span><button type="button" class="btn btn--ink" data-w="${i}" style="min-height:34px;padding:0 12px;font-size:.85rem">Watch</button></label>`).join('')}</div>
+ ${(c.ss||[]).length?`<p><b>Timetable</b></p>${c.ss.map(x=>`<p class="mut">${new Date(x.d).toLocaleString('en-KE',{dateStyle:'medium',timeStyle:'short'})} · ${esc(x.m)} · ${/^https?:/.test(x.w)?`<a href="${esc(x.w)}" target="_blank" rel="noopener" style="color:var(--red-d);font-weight:600">Join link</a>`:esc(x.w)}</p>`).join('')}`:''}
+ ${all&&!prev?'<button class="btn btn--red" id="gc">Get your certificate</button>':'<p class="mut">Tick each lesson as you finish. Complete them all to earn your certificate.</p>'}`;
+ $$('[data-w]',$('#plB')).forEach(b=>b.onclick=()=>{cur=+b.dataset.w;draw()});
+ $$('[data-l]',$('#plB')).forEach(x=>x.onchange=()=>{const i=+x.dataset.l;cur=i;en.done=x.checked?[...new Set([...en.done,i])]:en.done.filter(k=>k!==i);const dd=dat();dd.en[id]=en;save(dd);draw();drawCat()});
+ if(all&&!prev)$('#gc').onclick=()=>cert(id)};draw();$('#plD').showModal();$('#plD').onclose=()=>{if(!$('#dash').hidden)dash(curTab)}}
+function dash(t){$('#pub').hidden=true;$('#dash').hidden=false;$('#nav').classList.remove('is-open');$('#burger').setAttribute('aria-expanded','false');scrollTo(0,0);
+ const d=dat(),ids=Object.keys(d.en).filter(i=>cr(i)),T=isT(),mine=myC(),mids=mine.map(c=>c.id);
+ const tabs=T?[['mine','Teaching'],['new','Create course'],['stu','Students'],['earn','Earnings'],['learn','My learning'],['prof','Profile']]:[['learn','My learning'],['time','Timetable'],['browse','All courses'],['pay','Payments'],['cert','Certificates'],['prof','Profile']];
+ if(!tabs.some(x=>x[0]===t))t=tabs[0][0];curTab=t;
+ $('#dt').innerHTML=tabs.map(([k,v])=>`<button data-t="${k}" aria-pressed="${k===t}">${v}</button>`).join('');
+ $('#hi').textContent=(T?'Tutor dashboard: ':'Hello, ')+me.n.split(' ')[0];
+ const roster=[];for(const [em,u] of Object.entries(users())){const x=jget('gp_d_'+em,{en:{},pay:[]});mids.forEach(id=>{if(x.en[id])roster.push({n:u.n,em,c:cr(id),p:pc(x.en[id],cr(id)),paid:x.pay.filter(q=>q.id===id).reduce((a,q)=>a+q.amt,0),rc:x.pay.filter(q=>q.id===id).map(q=>q.rc).join(', ')})})};
+ const gross=roster.reduce((a,r)=>a+r.paid,0),earn=Math.round(gross*TS/100),done=ids.filter(i=>d.en[i].done.length===lessons(cr(i)).length);
+ const S=T?[[mine.length,'Courses'],[roster.length,'Enrolments'],[kes(earn)||'KES 0','Your earnings'],[mine.reduce((a,c)=>a+lessons(c).length,0),'Lessons published']]:[[ids.length,'Courses enrolled'],[ids.reduce((a,i)=>a+d.en[i].done.length,0),'Lessons completed'],[done.length,'Certificates'],[kes(d.pay.reduce((a,p)=>a+p.amt,0))||'Free','Paid so far']];
+ $('#stats').innerHTML=S.map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('');
+ let h='',after=()=>{};
+ if(t==='learn')h=ids.length?`<div class="grid">${ids.map(i=>card(cr(i))).join('')}</div>`:`<p>You have not enrolled yet. <a href="#" data-t2="${T?'new':'browse'}" style="color:var(--red-d);font-weight:600">${T?'Create a course':'Find a course'}</a>.</p>`;
+ if(t==='browse')h=`<div class="grid">${all().map(c=>card(c)).join('')}</div>`;
+ if(t==='time'){const R=[];ids.forEach(i=>(cr(i).ss||[]).forEach(x=>R.push({...x,c:cr(i)})));R.sort((a,b)=>a.d>b.d?1:-1);h=R.length?`<table><tr><th>When</th><th>Course</th><th>Format</th><th>Where</th></tr>${R.map(x=>`<tr><td>${new Date(x.d).toLocaleString('en-KE',{dateStyle:'medium',timeStyle:'short'})}</td><td>${esc(x.c.t)}</td><td>${esc(x.m)}</td><td>${/^https?:/.test(x.w)?`<a href="${esc(x.w)}" target="_blank" rel="noopener">Join link</a>`:esc(x.w)}</td></tr>`).join('')}</table>`:'<p>No sessions scheduled yet. Physical and live sessions from your tutors appear here.</p>'}
+ if(t==='pay')h=d.pay.length?`<table><tr><th>Date</th><th>Course</th><th>Amount</th><th>Receipt</th></tr>${d.pay.map(p=>`<tr><td>${new Date(p.date).toLocaleDateString('en-KE')}</td><td>${esc((cr(p.id)||{t:p.id}).t)}</td><td>${kes(p.amt)}</td><td>${p.rc}</td></tr>`).join('')}</table>`:'<p>No payments yet. Free courses never need one.</p>';
+ if(t==='cert')h=done.length?`<div class="grid">${done.map(i=>`<div class="box"><h3>${esc(cr(i).t)}</h3><p>Completed</p><p style="margin-top:12px"><button class="btn btn--red" data-ct="${i}">Download certificate</button></p></div>`).join('')}</div>`:'<p>Finish every lesson of a course to earn your certificate.</p>';
+ if(t==='mine')h=mine.length?`<div class="grid">${mine.map(c=>`<div>${card(c)}<p style="margin-top:8px;display:flex;gap:8px"><button class="btn btn--ink" data-ed="${c.id}" style="min-height:42px">Edit</button><button class="btn btn--line" data-del="${c.id}" style="min-height:42px">Delete</button></p></div>`).join('')}</div>`:'<p>You have no courses yet. Open <b>Create course</b> to publish your first one.</p>';
+ if(t==='stu')h=roster.length?`<table><tr><th>Student</th><th>Course</th><th>Progress</th><th>Paid</th></tr>${roster.map(r=>`<tr><td>${esc(r.n)}<br><small class="mut">${esc(r.em)}</small></td><td>${esc(r.c.t)}</td><td>${r.p}%</td><td>${kes(r.paid)}</td></tr>`).join('')}</table>`:'<p>No students have enrolled in your courses yet.</p>';
+ if(t==='earn')h=`<div class="stats" style="margin:0 0 18px"><div style="background:var(--mist)"><b style="color:var(--ink)">${kes(gross)||'KES 0'}</b><span style="color:var(--slate)">Gross sales</span></div><div style="background:var(--mist)"><b style="color:var(--ink)">${kes(earn)||'KES 0'}</b><span style="color:var(--slate)">Your share (${TS}%)</span></div><div style="background:var(--mist)"><b style="color:var(--ink)">${kes(gross-earn)||'KES 0'}</b><span style="color:var(--slate)">Geopram commission</span></div></div>${roster.filter(r=>r.paid).length?`<table><tr><th>Student</th><th>Course</th><th>Amount</th><th>Receipt</th></tr>${roster.filter(r=>r.paid).map(r=>`<tr><td>${esc(r.n)}</td><td>${esc(r.c.t)}</td><td>${kes(r.paid)}</td><td>${r.rc}</td></tr>`).join('')}</table>`:'<p>Sales appear here as students pay.</p>'}<p class="mut" style="margin-top:12px">Demo figures from this browser. With a backend, payouts go to your M-PESA automatically.</p>`;
+ if(t==='new'){const ed=mine.find(c=>c.id===window._ed)||{};h=`<form id="cf" class="dl" style="max-width:720px;padding:0" novalidate><h3>${ed.id?'Edit course':'Create a course'}</h3>
+ <div><label for="c1">Course title</label><input id="c1" value="${esc(ed.t||'')}"></div>
+ <div class="two" style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><div><label for="c2">Category</label><select id="c2">${Object.entries(CFG.cats).map(([k,v])=>`<option value="${k}" ${ed.c===k?'selected':''}>${v}</option>`).join('')}</select></div><div><label for="c3">Price in KES (0 = free)</label><input id="c3" type="number" min="0" value="${ed.p??0}"></div></div>
+ <div><label for="c4">Duration</label><input id="c4" placeholder="4 weeks" value="${esc(ed.d||'')}"></div>
+ <div><label for="c5">Short description</label><textarea id="c5" style="min-height:80px">${esc(ed.b||'')}</textarea></div>
+ <div><label for="c6">Lessons, one per line: title | YouTube link</label><textarea id="c6" style="min-height:120px" placeholder="Welcome and setup | https://youtu.be/XXXXXXXXXXX">${esc((ed.ls||[]).map(l=>l.t+' | '+l.v).join('\n'))}</textarea></div>
+ <div><label for="c7">Timetable, one per line: 2026-11-05 09:00 | Physical | Venue or link</label><textarea id="c7" style="min-height:90px">${esc((ed.ss||[]).map(x=>x.d.replace('T',' ')+' | '+x.m+' | '+x.w).join('\n'))}</textarea></div>
+ <div class="msg" id="cm" role="alert"></div><button class="btn btn--red" type="submit">${ed.id?'Save changes':'Publish course'}</button></form>`;
+ after=()=>$('#cf').onsubmit=e=>{e.preventDefault();const tt=$('#c1').value.trim(),b=$('#c5').value.trim(),ls=$('#c6').value.split('\n').map(x=>x.split('|').map(y=>y.trim())).filter(x=>x[0]).map(x=>({t:x[0],v:ytid(x[1])})),ss=$('#c7').value.split('\n').map(x=>x.split('|').map(y=>y.trim())).filter(x=>x[0]&&!isNaN(new Date(x[0].replace(' ','T')))).map(x=>({d:x[0].replace(' ','T'),m:x[1]||'Physical',w:x[2]||''}));
+  if(!tt||!b||!ls.length)return $('#cm').textContent='Add a title, description and at least one lesson.';
+  const A=jget('gp_courses',[]),o={id:ed.id||'c_'+Date.now().toString(36),t:tt,c:$('#c2').value,p:Math.max(0,+$('#c3').value||0),d:$('#c4').value.trim()||'Self-paced',b,ls,ss,o:me.email,by:me.n},k=A.findIndex(c=>c.id===o.id);k>=0?A[k]=o:A.push(o);jset('gp_courses',A);window._ed=null;drawCat();toast('Course saved.');dash('mine')}}
+ if(t==='prof'){const u=users()[me.email]||{},ed=!!window._pe;
+ const F=[['n','Full name',me.n],['ph','M-PESA phone',me.ph],['loc','Town and county',u.loc],['org','School, institution or company',u.org],['job','Occupation or level of study',u.job],['fmt','Preferred learning format',u.fmt],['int','Interests',u.int],...(T?[['exp','Areas of expertise',u.exp],['yrs','Years of experience',u.yrs],['qual','Qualifications and certifications',u.qual]]:[]),['bio',T?'About you (shown to students)':'About you',u.bio,1]];
+ const pct=Math.round(F.filter(f=>f[2]).length/F.length*100),ini=me.n.split(/\s+/).map(x=>x[0]).slice(0,2).join('').toUpperCase();
+ const head=`<div class="pf-h"><div class="av" aria-hidden="true">${esc(ini)}</div><div><h3>${esc(me.n)}</h3><p class="mut">${T?'Tutor':'Learner'} · ${esc(me.email)}</p><p class="mut">Member since ${new Date(u.since||Date.now()).toLocaleDateString('en-KE',{month:'long',year:'numeric'})}</p></div>${ed?'':'<button class="btn btn--red" id="pe">Edit profile</button>'}</div><div class="bar"><i style="width:${pct}%"></i></div><small class="mut">Profile ${pct}% complete${pct<100&&!ed?'. Press Edit profile to add more.':''}</small>`;
+ const opt=['','Physical class','Live online','Recorded lessons','Any format'];
+ if(!ed)h=head+`<dl class="pf-d">${F.map(([k,l,v,w])=>`<div class="${w?'w':''}"><dt>${l}</dt><dd>${v?esc(v):'<span class="mut">Not added</span>'}</dd></div>`).join('')}</dl>`;
+ else h=head+`<form id="pf" novalidate><div class="pf-f">${F.map(([k,l,v,w])=>`<div class="${w?'w':''}"><label for="pf_${k}">${l}</label>${k==='fmt'?`<select id="pf_${k}">${opt.map(o=>`<option value="${o}" ${o===(v||'')?'selected':''}>${o||'Choose one'}</option>`).join('')}</select>`:k==='bio'||k==='qual'||k==='int'||k==='exp'?`<textarea id="pf_${k}" style="min-height:${k==='bio'?110:80}px">${esc(v||'')}</textarea>`:`<input id="pf_${k}" ${k==='yrs'?'type="number" min="0" max="60"':k==='ph'?'type="tel"':''} value="${esc(v||'')}">`}</div>`).join('')}</div><div class="msg" id="fm" role="alert" style="margin-top:12px"></div><div class="pf-b"><button class="btn btn--red" type="submit">Save changes</button><button class="btn btn--line" type="button" id="pc">Cancel</button></div></form>`;
+ after=()=>{const pe=$('#pe');if(pe)pe.onclick=()=>{window._pe=true;dash('prof')};const pc=$('#pc');if(pc)pc.onclick=()=>{window._pe=false;dash('prof')};const f=$('#pf');if(f)f.onsubmit=e=>{e.preventDefault();const g=k=>($('#pf_'+k).value||'').trim(),n=g('n'),ph=g('ph');
+  if(!n)return $('#fm').textContent='Please enter your name.';if(ph&&!/^(\+?254|0)\d{9}$/.test(ph.replace(/\s/g,'')))return $('#fm').textContent='Enter a valid Kenyan phone number.';
+  const U=users(),nu={...U[me.email],n,ph};['loc','org','job','fmt','int','bio'].concat(T?['exp','yrs','qual']:[]).forEach(k=>nu[k]=g(k));U[me.email]=nu;jset('gp_users',U);me={...me,n,ph};jset('gp_me',me);
+  jset('gp_courses',jget('gp_courses',[]).map(c=>c.o===me.email?{...c,by:n}:c));window._pe=false;toast('Profile saved.');drawCat();dash('prof')}}}
+ $('#dv').innerHTML=h;after();const ap=$('#dt [aria-pressed=true]');if(ap&&ap.scrollIntoView)ap.scrollIntoView({inline:'center',block:'nearest'})}
+$('#dv').addEventListener('click',e=>{const x=e.target.closest('[data-ed]'),y=e.target.closest('[data-del]');if(x){window._ed=x.dataset.ed;dash('new')}if(y&&confirm('Delete this course?')){jset('gp_courses',jget('gp_courses',[]).filter(c=>c.id!==y.dataset.del));drawCat();dash('mine')}});
+</script></body></html>

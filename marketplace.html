@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geopram Marketplace | Software, GIS resources, templates and automation workflows</title>
+<meta name="description" content="Buy software tools, GIS resources, website templates, automation workflows and learning materials. Pay with M-PESA STK Push and download instantly.">
+<meta name="theme-color" content="#E30613"><link rel="icon" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --red:#E30613; --red-d:#A8000B; --red-l:#FF3B46;
+  --ink:#11151B; --ink-2:#1B2129; --ink-3:#2A313B;
+  --slate:#5A6270; --mist:#F2F3F5; --line:#E1E4E8; --white:#fff;
+  --cut:clamp(14px,2.2vw,26px);
+  --dcut:clamp(28px,5vw,72px);
+  --wrap:1200px;
+  --display:"Bricolage Grotesque","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --body:"Instrument Sans","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--body);font-size:1.0625rem;line-height:1.6;color:var(--ink);background:var(--white);overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--display);margin:0;letter-spacing:-.025em;line-height:1.08}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+section[id]{scroll-margin-top:72px}
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:clamp(20px,5vw,48px)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--red-l);outline-offset:3px}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:#fff;padding:10px 16px;z-index:100}
+.skip:focus{top:12px}
+
+/* brand device: the cut corner, taken from the faceted G */
+.cut{clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,0 100%)}
+.cut-both{clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut))}
+
+/* buttons */
+.btn{--cut:12px;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;font:600 1rem/1 var(--body);text-decoration:none;border:0;cursor:pointer;
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%);transition:background .2s,color .2s,transform .2s}
+.btn--red{background:var(--red);color:#fff}
+.btn--red:hover{background:var(--red-d)}
+.btn--ink{background:var(--ink);color:#fff}
+.btn--ink:hover{background:var(--ink-3)}
+.btn--line{background:transparent;color:inherit;box-shadow:inset 0 0 0 2px currentColor}
+.btn--line:hover{background:rgba(127,127,127,.14)}
+.btn--white{background:#fff;color:var(--red-d)}
+.btn--white:hover{background:var(--ink);color:#fff}
+.btn:focus-visible{clip-path:none;outline:3px solid var(--red-l);outline-offset:3px}
+.btn:active{transform:translateY(1px)}
+
+/* header */
+.hdr{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid transparent;transition:border-color .2s,box-shadow .2s}
+.hdr.is-stuck{border-color:var(--line);box-shadow:0 6px 24px rgba(17,21,27,.06)}
+.hdr__in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+.hdr__logo img{height:40px;width:auto}
+.nav{display:flex;align-items:center;gap:clamp(14px,2vw,30px)}
+.nav a{white-space:nowrap;text-decoration:none;font-weight:500;font-size:.97rem;padding:8px 2px;position:relative}
+.nav a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .2s}
+.nav a:not(.btn):hover::after{transform:scaleX(1)}
+.nav .btn{min-height:44px;padding:0 20px;font-size:.95rem;color:#fff}
+.burger{display:none;width:46px;height:46px;border:0;background:var(--ink);cursor:pointer;padding:0;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);position:relative}
+.burger span,.burger span::before,.burger span::after{display:block;position:absolute;left:13px;width:20px;height:2px;background:#fff;transition:transform .2s,opacity .2s}
+.burger span{top:22px}.burger span::before,.burger span::after{content:"";left:0}
+.burger span::before{top:-6px}.burger span::after{top:6px}
+.burger[aria-expanded="true"] span{background:transparent}
+.burger[aria-expanded="true"] span::before{transform:translateY(6px) rotate(45deg)}
+.burger[aria-expanded="true"] span::after{transform:translateY(-6px) rotate(-45deg)}
+
+/* diagonal dark sections */
+.dark{position:relative;z-index:1;background:var(--ink);color:#fff;
+  clip-path:polygon(0 var(--dcut),100% 0,100% calc(100% - var(--dcut)),0 100%);
+  margin-block:calc(var(--dcut) * -1);
+  padding-block:calc(var(--dcut) + clamp(60px,8vw,112px))}
+.dark--top{clip-path:polygon(0 var(--dcut),100% 0,100% 100%,0 100%);margin-bottom:0;padding-bottom:clamp(60px,8vw,100px)}
+.dark__bg{position:absolute;inset:0;background:url(images/contours.svg) center/cover no-repeat;opacity:.13;pointer-events:none}
+.dark .wrap{position:relative}
+.light{padding-block:clamp(64px,9vw,120px)}
+.sec-head{max-width:46rem;margin-bottom:clamp(30px,4vw,52px)}
+.sec-head h2{font-size:clamp(1.95rem,4vw,3.2rem);font-weight:800;text-wrap:balance}
+.sec-head p{margin-top:16px;color:var(--slate);max-width:40em}
+.dark .sec-head p{color:#B7BEC9}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(28px,5vw,72px);align-items:start}
+.contact h2{font-size:clamp(2rem,4.4vw,3.5rem);font-weight:800;text-wrap:balance}
+.contact__lede{margin-top:16px;color:#B7BEC9;max-width:30em}
+.contact dl{margin:34px 0 0;display:grid;gap:18px}
+.contact dt{font-size:.88rem;color:#8993A1;font-weight:600}
+.contact dd{margin:2px 0 0;font-weight:500;font-size:1.08rem}
+.contact dd a{text-decoration:none;border-bottom:2px solid var(--red)}
+.contact dd a:hover{color:var(--red-l)}
+.form{background:#fff;color:var(--ink);padding:clamp(22px,3vw,36px);display:grid;gap:18px;
+  clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)}
+.form label{display:block;font-weight:600;font-size:.92rem;margin-bottom:6px}
+.form input,.form select,.form textarea{width:100%;border:2px solid var(--line);background:#fff;padding:13px 14px;font:400 1rem var(--body);color:var(--ink);border-radius:0;min-height:50px}
+.form textarea{min-height:130px;resize:vertical}
+.form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--ink)}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form small{color:var(--slate);font-size:.85rem}
+
+/* footer */
+.foot{background:var(--ink);color:#B7BEC9;padding:0 0 32px}
+.foot__in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:28px;padding-top:36px;border-top:1px solid var(--ink-3)}
+.foot img{height:38px;width:auto}
+.foot nav{display:flex;flex-wrap:wrap;gap:8px 24px}
+.foot nav a{text-decoration:none;font-weight:500;color:#fff}
+.foot nav a:hover{color:var(--red-l)}
+.foot__legal{width:100%;font-size:.88rem}
+
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.pills button{min-height:42px;padding:0 18px;border:0;background:var(--mist);font:600 .93rem var(--body);cursor:pointer;color:var(--ink)}
+.pills button[aria-pressed=true]{background:var(--ink);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.cc{background:var(--mist);display:flex;flex-direction:column;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%)}
+.cc .im{height:130px;background:var(--ink) url(images/contours.svg) center/cover;position:relative}
+.cc .im img{width:100%;height:100%;object-fit:cover}
+.cc .tg{position:absolute;left:0;bottom:0;background:var(--red);color:#fff;font:600 .8rem var(--body);padding:5px 12px}
+.cc .tg.free{background:var(--ink)}
+.cc .bd{padding:18px 20px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.cc h3{font-size:1.2rem;font-weight:700}.cc p{color:var(--slate);font-size:.95rem}
+.cc small{color:var(--slate);font-size:.84rem}
+.cc .ft{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px}
+.cc .ft b{font:700 1.15rem var(--display)}
+.cc .btn{min-height:44px;padding:0 18px;font-size:.92rem}
+.bar{height:8px;background:var(--line)}.bar i{display:block;height:100%;background:var(--red)}
+dialog{border:0;padding:0;width:min(560px,94vw);max-height:92vh;overflow:auto;color:var(--ink)}
+dialog::backdrop{background:rgba(17,21,27,.72)}
+.dl{padding:clamp(20px,3vw,32px);display:grid;gap:14px}
+.dl h3{font-size:1.5rem}.x{justify-self:end;border:0;background:var(--mist);width:40px;height:40px;cursor:pointer;font-size:1.3rem}
+.dl label{font-weight:600;font-size:.9rem;display:block;margin-bottom:5px}
+.dl input,.dl select,.dl textarea,.form input,.form select,.form textarea{width:100%;border:2px solid var(--line);padding:12px;font:400 1rem var(--body);min-height:48px;border-radius:0;color:var(--ink);background:#fff}
+.dl input:focus{outline:none;border-color:var(--ink)}
+.msg{color:var(--red-d);font-weight:600;font-size:.9rem;min-height:1.2em}.mut{color:var(--slate);font-size:.88rem}
+.dtabs{display:flex;gap:6px;flex-wrap:wrap;margin:22px 0}
+.dtabs button{min-height:46px;padding:0 20px;border:0;background:var(--mist);font:600 .95rem var(--body);cursor:pointer}
+.dtabs button[aria-pressed=true]{background:var(--red);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:22px}
+.stats div{background:var(--ink-2);padding:16px 18px}.stats b{display:block;font:800 2rem var(--display)}.stats span{color:#B7BEC9;font-size:.9rem}
+table{width:100%;border-collapse:collapse;font-size:.95rem}td,th{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line)}
+.lsn{display:grid;gap:6px}.lsn label{display:flex;gap:10px;align-items:center;padding:10px;background:var(--mist);margin:0;font-weight:500}
+.lsn input{width:20px;min-height:0;height:20px;accent-color:var(--red)}
+.vid{aspect-ratio:16/9;background:var(--ink);color:#B7BEC9;display:grid;place-items:center;text-align:center;padding:16px}.vid iframe{width:100%;height:100%;border:0}
+.pf-h{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:16px}.pf-h h3{font-size:1.6rem}.pf-h .btn{margin-left:auto}
+.av{flex:none;width:72px;height:72px;background:var(--red);color:#fff;display:grid;place-items:center;font:800 1.6rem var(--display);clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%)}
+.pf-d,.pf-f{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:22px 0 0}.pf-d>div{background:var(--mist);padding:14px 16px}.pf-d dt{font-size:.82rem;font-weight:600;color:var(--slate)}.pf-d dd{margin:4px 0 0;font-weight:500;overflow-wrap:anywhere}.pf-d .w,.pf-f .w{grid-column:1/-1}
+.pf-f label{font-weight:600;font-size:.9rem;display:block;margin-bottom:5px}.pf-f input,.pf-f select,.pf-f textarea{width:100%;border:2px solid var(--line);padding:12px;font:400 1rem var(--body);min-height:48px;border-radius:0;background:#fff;color:var(--ink)}.pf-f input:focus,.pf-f select:focus,.pf-f textarea:focus{outline:none;border-color:var(--ink)}
+.pf-b{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.pf-b .btn{min-width:150px}
+.nav a,.nav button.lnk,.nav .btn{white-space:nowrap}
+@media(max-width:860px){.dtabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;margin-inline:calc(-1*clamp(20px,5vw,48px));padding:0 clamp(20px,5vw,48px) 8px;scroll-snap-type:x proximity}.dtabs button{flex:0 0 auto;white-space:nowrap;scroll-snap-align:start}.pf-h .btn{margin-left:0;width:100%}.stats{grid-template-columns:1fr 1fr}.pf-b .btn{flex:1}}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:14px 22px;z-index:200;font-weight:600;max-width:92vw;display:none;border-left:6px solid var(--red)}
+[hidden]{display:none!important}
+@media(max-width:1020px){.ah .wrap,.contact{grid-template-columns:1fr}}
+@media(max-width:1100px){.burger{display:block}.nav{position:absolute;left:0;right:0;top:72px;flex-direction:column;align-items:stretch;gap:0;background:#fff;padding:8px 24px 22px;border-bottom:1px solid var(--line);display:none}.nav.is-open{display:flex}.nav a,.nav button.lnk{padding:14px 0;border-bottom:1px solid var(--line);text-align:left;font-size:1.05rem}.nav .btn{margin-top:14px}}
+@media(max-width:640px){.form .two{grid-template-columns:1fr}.ah .cta .btn{width:100%}}
+
+.mk{padding:26px 0 0}.mk h1{font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:800;letter-spacing:-.03em}.mk p{color:var(--slate);margin-top:6px}
+.tb{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:20px 0 14px}
+.tb input,.tb select{border:2px solid var(--line);padding:0 14px;min-height:46px;font:400 1rem var(--body);background:#fff;border-radius:0;color:var(--ink)}
+.tb input{flex:1 1 240px}.tb input:focus,.tb select:focus{outline:none;border-color:var(--ink)}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px;margin:6px 0 34px}
+.feat .cc{background:var(--ink);color:#fff}.feat .cc p,.feat .cc small{color:#B7BEC9}.feat .im{height:170px}
+.h2s{font:800 1.5rem var(--display);margin:6px 0 16px;letter-spacing:-.02em}
+.cc .im .tg{background:var(--red)}.cc .ft .row{display:flex;gap:8px}.cc .btn--line{color:var(--ink)}.feat .btn--line{color:#fff}
+.cc .ft{flex-wrap:wrap}.price{font:700 1.2rem var(--display)}.was{color:var(--slate);font-size:.85rem}
+.ci{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.ci button.rm{border:0;background:none;color:var(--red-d);font-weight:600;cursor:pointer;justify-self:end}
+.tl{list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:.95rem}.tl li{display:flex;gap:10px;opacity:.15;transition:opacity .4s}.tl li.on{opacity:1}
+.tl li::before{content:"";flex:none;width:12px;height:12px;margin-top:6px;background:var(--red);clip-path:polygon(0 0,70% 0,100% 30%,100% 100%,0 100%)}
+.auto{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:22px;counter-reset:a;list-style:none;padding:0;margin:0}
+.auto li{counter-increment:a;border-top:3px solid var(--red);padding-top:14px}.auto li::before{content:counter(a);font:800 1.6rem var(--display);color:var(--red-l);display:block}
+.auto b{display:block;margin:4px 0}.auto span{color:#B7BEC9;font-size:.95rem}
+.key{font:600 .85rem ui-monospace,Menlo,Consolas,monospace;background:var(--mist);padding:3px 8px;word-break:break-all}
+.cnt{background:#fff;color:var(--red-d);font-weight:700;font-size:.78rem;padding:1px 7px;margin-left:6px}
+</style></head><body>
+<header class="hdr" id="hdr"><div class="wrap hdr__in">
+<a class="hdr__logo" href="#top" aria-label="Geopram Marketplace home"><img src="images/geopram-logo.png" alt="Geopram Technologies" width="150" height="40"></a>
+<button class="burger" id="burger" aria-expanded="false" aria-label="Open menu"><span></span></button>
+<nav class="nav" id="nav" aria-label="Main"><a href="#products">Products</a><a href="#auto">How it works</a><a href="#sell">Sell with us</a><a href="academy.html">Academy</a>
+<button class="lnk" id="libB" style="background:none;border:0;font:500 .97rem var(--body);cursor:pointer;padding:8px 2px">My purchases</button><button class="btn btn--red" id="cartB">Cart<span class="cnt" id="cnt">0</span></button></nav></div></header>
+
+<main id="top"><div class="wrap">
+<div class="mk"><h1>Geopram Marketplace</h1><p>Software, GIS resources, templates and workflows. Pay with M-PESA, download in seconds.</p></div>
+<div class="tb"><input id="q" type="search" placeholder="Search products" aria-label="Search products"><select id="so" aria-label="Sort"><option value="f">Featured first</option><option value="a">Price: low to high</option><option value="d">Price: high to low</option></select></div>
+<div class="pills" id="pills" role="group" aria-label="Categories"></div>
+<div id="fw"><h2 class="h2s">Featured</h2><div class="feat" id="feat"></div></div>
+<h2 class="h2s" id="products" style="scroll-margin-top:90px">All products</h2><div class="grid" id="cat" style="margin-bottom:70px"></div></div>
+
+<section class="dark" id="auto" style="margin-top:0"><div class="dark__bg"></div><div class="wrap"><div class="sec-head"><h2>Every sale runs itself</h2><p>From payment to delivery there is no manual step, so buyers get their product in seconds, day or night.</p></div>
+<ol class="auto"><li><b>Customer pays</b><span>M-PESA STK Push prompt on their phone.</span></li><li><b>Payment confirmed</b><span>The callback marks the order paid.</span></li><li><b>Licence issued</b><span>A unique key is created for each product.</span></li><li><b>Download unlocks</b><span>Files open instantly and stay in My purchases.</span></li><li><b>Receipt emailed</b><span>Sent through the Gmail API with the licence key.</span></li><li><b>Seller paid and logged</b><span>Commission is split and the sale is recorded to Sheets.</span></li></ol></div></section>
+
+<section class="dark dark--top" id="sell" style="margin-top:0"><div class="dark__bg"></div><div class="wrap contact"><div><h2 style="font-size:clamp(2rem,4vw,3.2rem);font-weight:800">Sell your tools on Geopram</h2><p class="contact__lede">Built a QGIS style pack, a script, a template or a workflow? List it here. We handle payments, delivery and receipts. You keep <b id="sh"></b> of every sale.</p></div>
+<form class="form" id="sf" novalidate><div class="two"><div><label for="s1">Your name</label><input id="s1" autocomplete="name"></div><div><label for="s2">Email or phone</label><input id="s2"></div></div><div class="two"><div><label for="s3">Product name</label><input id="s3"></div><div><label for="s4">Category</label><select id="s4"></select></div></div><div><label for="s5">Price (KES) and short description</label><textarea id="s5" style="min-height:90px"></textarea></div><button class="btn btn--red" type="submit">Send listing request</button><small id="sm" class="mut">This opens your email app with the request ready to send.</small></form></div></section></main>
+
+<footer class="foot"><div class="wrap"><div class="foot__in"><img src="images/geopram-logo-light.png" alt="Geopram Technologies" width="140" height="38"><nav aria-label="Footer"><a href="#products">Products</a><a href="#sell">Sell with us</a><a href="academy.html">Academy</a><a href="index.html">Geopram Technologies</a></nav><p class="foot__legal">&copy; <span id="yr">2026</span> Geopram Marketplace, part of Geopram Technologies, Nyeri, Kenya.</p></div></div></footer>
+
+<dialog id="pD"><div class="dl"><button class="x" data-close aria-label="Close">&times;</button><div id="pB"></div></div></dialog>
+<dialog id="cD"><div class="dl"><button class="x" data-close aria-label="Close">&times;</button><div id="cB"></div></div></dialog>
+<dialog id="lD"><div class="dl"><button class="x" data-close aria-label="Close">&times;</button><div id="lB"></div></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ===== EDIT ME: products, prices (KES), commission ===== */
+const CFG={email:'celestakim018@gmail.com',share:85,
+cats:{software:'Software tools',gis:'GIS resources',web:'Website templates',auto:'Automation workflows',learn:'Learning materials'},
+products:[
+{id:'stk',t:'M-PESA STK Push Starter Kit',c:'auto',p:6000,f:1,i:null,b:'Ready-made STK Push, callback and receipt flow you can drop into your own site.',inc:['Request and callback code','Order and receipt logic','Setup guide'],fmt:'ZIP + PDF'},
+{id:'otp',t:'Gmail API OTP Mailer',c:'auto',p:3500,f:1,b:'Send one-time codes by email with expiry and retry limits.',inc:['OAuth2 setup guide','OTP generation and checks','Email templates'],fmt:'ZIP'},
+{id:'lis',t:'Parcel Search and PDF Portal',c:'software',p:15000,f:1,i:'10-vector-map',b:'A searchable land-records portal with printable PDF extracts.',inc:['Web app source','Database schema','Deployment notes'],fmt:'ZIP'},
+{id:'qgis',t:'QGIS Map Layout Pack',c:'gis',p:1500,i:'03-building-types',b:'Print-ready layouts, north arrows and styles for clean maps.',inc:['Layout templates','Style files','Quick start'],fmt:'ZIP'},
+{id:'gee',t:'Earth Engine Script Bundle',c:'gis',p:2500,i:'06-spectral-index',b:'NDVI, land surface temperature and land cover scripts, commented line by line.',inc:['Scripts','Sample regions','Notes'],fmt:'ZIP'},
+{id:'poster',t:'Research Poster and Map Templates',c:'gis',p:1200,i:'09-canopy-height',b:'Editable poster layouts for conferences and class projects.',inc:['Poster templates','Colour palettes'],fmt:'ZIP'},
+{id:'site',t:'Business Website Template',c:'web',p:4500,b:'A fast, responsive, multi-page template ready for your content.',inc:['HTML and CSS source','Contact form','Hosting guide'],fmt:'ZIP'},
+{id:'bak',t:'Google Sheets Backup Automation',c:'auto',p:2000,b:'Back up your database to Sheets and Drive on a schedule.',inc:['Script','Schedule setup','Restore guide'],fmt:'ZIP'},
+{id:'clean',t:'Cadastral Data Cleaning Toolkit',c:'software',p:5000,i:'02-land-cover',b:'Python tools to fix geometry, attributes and projections in survey data.',inc:['Python scripts','Sample dataset','Guide'],fmt:'ZIP'},
+{id:'notes',t:'GIS and Remote Sensing Study Notes',c:'learn',p:0,i:'01-satellite-imagery',b:'Clear, free revision notes for students.',inc:['PDF notes'],fmt:'PDF'},
+{id:'sqlc',t:'SQL and PostGIS Cheat Sheet',c:'learn',p:0,b:'The queries you use every week, on two pages.',inc:['PDF cheat sheet'],fmt:'PDF'}]};
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const jget=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??d}catch(e){return d}},jset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const kes=n=>n?'KES '+n.toLocaleString('en-KE'):'Free';const pr=id=>CFG.products.find(p=>p.id===id);
+let cart=jget('gp_cart',[]),flt='all',T=[];
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3200)}
+$$('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());$$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
+$('#yr').textContent=new Date().getFullYear();$('#sh').textContent=CFG.share+'%';
+$('#burger').onclick=()=>{const o=$('#nav').classList.toggle('is-open');$('#burger').setAttribute('aria-expanded',o)};
+$$('#nav a').forEach(a=>a.onclick=()=>$('#nav').classList.remove('is-open'));
+addEventListener('scroll',()=>$('#hdr').classList.toggle('is-stuck',scrollY>8),{passive:true});
+$('#s4').innerHTML=Object.values(CFG.cats).map(v=>`<option>${v}</option>`).join('');
+
+/* catalogue: products first */
+function card(p){return `<article class="cc"><div class="im">${p.i?`<img src="images/${p.i}.jpg" alt="" loading="lazy">`:''}<span class="tg">${CFG.cats[p.c]}</span></div><div class="bd"><h3>${esc(p.t)}</h3><p>${esc(p.b)}</p><small>${p.fmt} · Instant download</small>
+<div class="ft"><span class="price">${kes(p.p)}</span><span class="row"><button class="btn btn--line" data-v="${p.id}" style="padding:0 14px">Details</button><button class="btn btn--red" data-a="${p.id}">${p.p?'Add to cart':'Get free'}</button></span></div></div></article>`}
+function draw(){const q=$('#q').value.trim().toLowerCase(),s=$('#so').value;
+ $('#pills').innerHTML=[['all','All'],...Object.entries(CFG.cats)].map(([k,v])=>`<button aria-pressed="${flt===k}" data-f="${k}">${v}</button>`).join('');
+ let L=CFG.products.filter(p=>(flt==='all'||p.c===flt)&&(!q||(p.t+p.b+CFG.cats[p.c]).toLowerCase().includes(q)));
+ if(s==='a')L.sort((a,b)=>a.p-b.p);if(s==='d')L.sort((a,b)=>b.p-a.p);
+ const F=L.filter(p=>p.f);$('#fw').hidden=!F.length||q||s!=='f';$('#feat').innerHTML=F.map(card).join('');
+ $('#cat').innerHTML=L.length?L.map(card).join(''):'<p>No products match. Try another word or category.</p>';
+ $('#cnt').textContent=cart.length;jset('gp_cart',cart)}
+$('#pills').onclick=e=>{const b=e.target.closest('[data-f]');if(b){flt=b.dataset.f;draw()}};$('#q').oninput=draw;$('#so').onchange=draw;
+document.addEventListener('click',e=>{const a=e.target.closest('[data-a]'),v=e.target.closest('[data-v]');
+ if(a){add(a.dataset.a);openCart()}if(v)detail(v.dataset.v)});
+function add(id){if(!cart.includes(id))cart.push(id);draw()}
+function detail(id){const p=pr(id);$('#pB').innerHTML=`<h3>${esc(p.t)}</h3><p>${esc(p.b)}</p><p><b>What you get</b></p><ul style="padding-left:18px;margin:0">${p.inc.map(i=>`<li>${esc(i)}</li>`).join('')}</ul><p class="mut">Format: ${p.fmt}. Delivery: instant download after payment, with a licence key and an emailed receipt.</p><p><span class="price">${kes(p.p)}</span></p><button class="btn btn--red" data-a="${id}" onclick="$('#pD').close()">${p.p?'Add to cart':'Get free'}</button>`;$('#pD').showModal()}
+
+/* cart + checkout */
+function openCart(){$('#pD').close();cartView();$('#cD').showModal()}
+$('#cartB').onclick=openCart;
+function total(){return cart.reduce((a,i)=>a+pr(i).p,0)}
+function cartView(){if(!cart.length){$('#cB').innerHTML='<h3>Your cart is empty</h3><p>Pick a product and it will appear here.</p>';return}
+ $('#cB').innerHTML=`<h3>Your cart</h3><div>${cart.map(i=>`<div class="ci"><b>${esc(pr(i).t)}</b><span>${kes(pr(i).p)}</span><small class="mut">${pr(i).fmt}</small><button class="rm" data-rm="${i}">Remove</button></div>`).join('')}</div>
+ <p><b>Total: ${kes(total())}</b></p><div><label for="k1">Email for your receipt and licence</label><input id="k1" type="email" autocomplete="email" value="${esc(jget('gp_mail',''))}"></div>
+ ${total()?'<div><label for="k2">M-PESA number</label><input id="k2" type="tel" placeholder="07XX XXX XXX" autocomplete="tel"></div>':''}<div class="msg" id="km" role="alert"></div><button class="btn btn--red" id="kb">${total()?'Pay with M-PESA':'Get my downloads'}</button><p class="mut">Demo mode: no real payment is taken. A live version needs your Daraja credentials and a server callback.</p>`;
+ $$('[data-rm]').forEach(b=>b.onclick=()=>{cart=cart.filter(x=>x!==b.dataset.rm);draw();cartView()});
+ $('#kb').onclick=()=>{const em=$('#k1').value.trim().toLowerCase(),ph=($('#k2')?$('#k2').value:'').replace(/\s/g,'');
+  if(!/^\S+@\S+\.\S+$/.test(em))return $('#km').textContent='Enter a valid email address.';if(total()&&!/^(\+?254|0)\d{9}$/.test(ph))return $('#km').textContent='Enter a valid Kenyan M-PESA number.';
+  jset('gp_mail',em);total()?stk(em):done(em,'FREE')}}
+function stk(em){$('#cB').innerHTML=`<h3>Check your phone</h3><p>Approve ${kes(total())} to Geopram Technologies.</p><div class="box" style="text-align:center">Waiting for confirmation…</div><button class="btn btn--red" id="sp">Simulate entering PIN</button>`;
+ $('#sp').onclick=()=>done(em,'S'+Math.random().toString(36).slice(2,11).toUpperCase())}
+function lic(){const r=()=>Math.random().toString(36).slice(2,6).toUpperCase();return 'GP-'+r()+'-'+r()+'-'+r()}
+function done(em,rc){const O=jget('gp_orders',[]),o={id:'ORD-'+Date.now().toString(36).toUpperCase(),ts:Date.now(),em,rc,tot:total(),items:cart.map(i=>({id:i,t:pr(i).t,p:pr(i).p,k:lic()}))};O.unshift(o);jset('gp_orders',O);cart=[];draw();
+ const seller=Math.round(o.tot*CFG.share/100),steps=[`Payment confirmed (${rc})`,`Order ${o.id} marked paid`,`${o.items.length} licence key${o.items.length>1?'s':''} created`,'Downloads unlocked',`Receipt emailed to ${esc(em)} via Gmail API`,o.tot?`Seller share ${kes(seller)} and Geopram commission ${kes(o.tot-seller)} recorded`:'Free download recorded','Sale logged to Google Sheets'];
+ $('#cB').innerHTML=`<h3>Thank you. Your order is ready.</h3><ul class="tl" id="tl">${steps.map(s=>`<li>${s}</li>`).join('')}</ul><div id="dls" hidden>${orderHtml(o)}</div>`;
+ steps.forEach((s,i)=>setTimeout(()=>{$$('#tl li')[i]?.classList.add('on');if(i===steps.length-1)$('#dls').hidden=false},i*380))}
+function orderHtml(o){return o.items.map(it=>`<div class="ci"><span><b>${esc(it.t)}</b><br><span class="key">${it.k}</span></span><button class="btn btn--red" style="min-height:42px;padding:0 16px" data-dl="${o.id}|${it.id}">Download</button></div>`).join('')}
+document.addEventListener('click',e=>{const d=e.target.closest('[data-dl]');if(!d)return;const [oid,pid]=d.dataset.dl.split('|'),o=jget('gp_orders',[]).find(x=>x.id===oid),it=o.items.find(x=>x.id===pid),p=pr(pid);
+ const txt=`GEOPRAM MARKETPLACE\n\nProduct: ${it.t}\nLicence key: ${it.k}\nOrder: ${o.id}\nReceipt: ${o.rc}\nLicensed to: ${o.em}\n\nPlaceholder file. Replace with the real product file (set "file" on the product in CFG).`;
+ if(p.file){location.href=p.file;return}const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download=pid+'-licence.txt';a.click()});
+
+/* my purchases */
+$('#libB').onclick=()=>{const O=jget('gp_orders',[]);$('#lB').innerHTML='<h3>My purchases</h3>'+(O.length?O.map(o=>`<div class="box" style="margin-bottom:12px"><small class="mut">${o.id} · ${new Date(o.ts).toLocaleDateString('en-KE')} · ${kes(o.tot)} · Receipt ${o.rc}</small>${orderHtml(o)}</div>`).join(''):'<p>You have not bought anything yet. Your downloads and licence keys will be kept here.</p>');$('#lD').showModal()};
+
+/* seller form */
+$('#sf').onsubmit=e=>{e.preventDefault();const n=$('#s1').value.trim(),c=$('#s2').value.trim();if(!n||!c||!$('#s3').value.trim()){$('#sm').textContent='Please add your name, contact and product name.';$('#sm').style.color='#A8000B';return}
+ location.href='mailto:'+CFG.email+'?subject='+encodeURIComponent('Marketplace listing: '+$('#s3').value)+'&body='+encodeURIComponent(`Name: ${n}\nContact: ${c}\nProduct: ${$('#s3').value}\nCategory: ${$('#s4').value}\n\n${$('#s5').value}`)};
+draw();
+</script></body></html>

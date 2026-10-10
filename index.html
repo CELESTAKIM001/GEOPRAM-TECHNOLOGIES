@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geopram Technologies | Geospatial intelligence, AI and software built in Kenya</title>
+<meta name="description" content="Geopram Technologies builds Earth Observation and GIS solutions, AI models, web platforms and integrations: M-PESA STK Push, Gmail API, OTP verification and automation.">
+<meta name="theme-color" content="#E30613">
+<meta property="og:title" content="Geopram Technologies">
+<meta property="og:description" content="From satellite to payment: one team builds all of it.">
+<meta property="og:image" content="images/geopram-logo.png">
+<link rel="icon" href="images/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#E30613; --red-d:#A8000B; --red-l:#FF3B46;
+  --ink:#11151B; --ink-2:#1B2129; --ink-3:#2A313B;
+  --slate:#5A6270; --mist:#F2F3F5; --line:#E1E4E8; --white:#fff;
+  --cut:clamp(14px,2.2vw,26px);
+  --dcut:clamp(28px,5vw,72px);
+  --wrap:1200px;
+  --display:"Bricolage Grotesque","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --body:"Instrument Sans","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--body);font-size:1.0625rem;line-height:1.6;color:var(--ink);background:var(--white);overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--display);margin:0;letter-spacing:-.025em;line-height:1.08}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+section[id]{scroll-margin-top:72px}
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:clamp(20px,5vw,48px)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--red-l);outline-offset:3px}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:#fff;padding:10px 16px;z-index:100}
+.skip:focus{top:12px}
+
+/* brand device: the cut corner, taken from the faceted G */
+.cut{clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,0 100%)}
+.cut-both{clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut))}
+
+/* buttons */
+.btn{--cut:12px;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;font:600 1rem/1 var(--body);text-decoration:none;border:0;cursor:pointer;
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%);transition:background .2s,color .2s,transform .2s}
+.btn--red{background:var(--red);color:#fff}
+.btn--red:hover{background:var(--red-d)}
+.btn--ink{background:var(--ink);color:#fff}
+.btn--ink:hover{background:var(--ink-3)}
+.btn--line{background:transparent;color:inherit;box-shadow:inset 0 0 0 2px currentColor}
+.btn--line:hover{background:rgba(127,127,127,.14)}
+.btn--white{background:#fff;color:var(--red-d)}
+.btn--white:hover{background:var(--ink);color:#fff}
+.btn:focus-visible{clip-path:none;outline:3px solid var(--red-l);outline-offset:3px}
+.btn:active{transform:translateY(1px)}
+
+/* header */
+.hdr{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid transparent;transition:border-color .2s,box-shadow .2s}
+.hdr.is-stuck{border-color:var(--line);box-shadow:0 6px 24px rgba(17,21,27,.06)}
+.hdr__in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+.hdr__logo img{height:40px;width:auto}
+.nav{display:flex;align-items:center;gap:clamp(14px,2vw,30px)}
+.nav a{white-space:nowrap;text-decoration:none;font-weight:500;font-size:.97rem;padding:8px 2px;position:relative}
+.nav a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .2s}
+.nav a:not(.btn):hover::after{transform:scaleX(1)}
+.nav .btn{min-height:44px;padding:0 20px;font-size:.95rem;color:#fff}
+.burger{display:none;width:46px;height:46px;border:0;background:var(--ink);cursor:pointer;padding:0;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);position:relative}
+.burger span,.burger span::before,.burger span::after{display:block;position:absolute;left:13px;width:20px;height:2px;background:#fff;transition:transform .2s,opacity .2s}
+.burger span{top:22px}.burger span::before,.burger span::after{content:"";left:0}
+.burger span::before{top:-6px}.burger span::after{top:6px}
+.burger[aria-expanded="true"] span{background:transparent}
+.burger[aria-expanded="true"] span::before{transform:translateY(6px) rotate(45deg)}
+.burger[aria-expanded="true"] span::after{transform:translateY(-6px) rotate(-45deg)}
+
+/* hero */
+.hero{position:relative;padding:clamp(36px,6vw,84px) 0 clamp(72px,9vw,130px);overflow:hidden}
+.hero__bg{position:absolute;inset:0;background:url(images/contours.svg) center/cover no-repeat;opacity:.3;pointer-events:none;
+  -webkit-mask-image:linear-gradient(100deg,#000 0%,transparent 55%);mask-image:linear-gradient(100deg,#000 0%,transparent 55%)}
+.hero__grid{position:relative;display:grid;grid-template-columns:1.02fr 1fr;align-items:center;gap:clamp(24px,4vw,64px)}
+.hero h1{font-size:clamp(2.45rem,5.6vw,4.7rem);font-weight:800;line-height:1.01;letter-spacing:-.035em;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--red)}
+.lede{margin-top:22px;max-width:34em;font-size:clamp(1.05rem,1.5vw,1.2rem);color:#39414d}
+.hero .cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.hero__facts{margin-top:40px;display:grid;gap:12px;max-width:30em}
+.hero__facts li{display:flex;gap:14px;align-items:flex-start;font-weight:500}
+.hero__facts li::before{content:"";flex:none;width:14px;height:14px;margin-top:6px;background:var(--red);clip-path:polygon(0 0,70% 0,100% 30%,100% 100%,0 100%)}
+.hero__visual{position:relative;aspect-ratio:1.1/1;width:100%}
+.wedge-ink,.wedge-red{position:absolute;clip-path:polygon(20% 0,100% 0,100% 80%,80% 100%,0 100%,0 20%)}
+.wedge-ink{inset:8% 0 0 8%;background:var(--ink);transform:translate(-14px,14px)}
+.wedge-red{inset:8% 0 0 8%;background:linear-gradient(155deg,var(--red-l) 0%,var(--red) 38%,var(--red-d) 100%);animation:wedge 1s cubic-bezier(.2,.8,.2,1) both}
+.lady{position:absolute;bottom:0;left:-6%;width:114%;max-width:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%);mask-image:linear-gradient(90deg,transparent 0,#000 16%);filter:drop-shadow(0 18px 24px rgba(17,21,27,.28));animation:rise .9s .15s cubic-bezier(.2,.8,.2,1) both}
+.chip{position:absolute;display:flex;align-items:center;gap:12px;padding:12px 18px 12px 12px;background:#fff;color:var(--ink);box-shadow:0 14px 34px rgba(17,21,27,.22);font-size:.86rem;line-height:1.3;
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%);animation:pop .55s cubic-bezier(.2,1.2,.3,1) both}
+.chip b{display:block;font-family:var(--display);font-size:.98rem;letter-spacing:-.01em}
+.chip span{color:var(--slate)}
+.chip i{flex:none;width:38px;height:38px;display:grid;place-items:center;background:var(--ink);color:#fff;font-style:normal}
+.chip i svg{width:20px;height:20px}
+.chip--stk{left:-2%;top:2%;animation-delay:.75s}
+.chip--otp{right:-2%;top:26%;animation-delay:1s}
+.chip--mail{left:-5%;bottom:9%;animation-delay:1.25s}
+.chip--otp i,.chip--stk i{background:var(--red)}
+.chip .code{font-family:var(--display);font-size:1.15rem;letter-spacing:.14em;font-weight:700}
+@keyframes wedge{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+@keyframes rise{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+@keyframes pop{from{transform:scale(.85) translateY(10px);opacity:0}to{transform:none;opacity:1}}
+
+/* diagonal dark sections */
+.dark{position:relative;z-index:1;background:var(--ink);color:#fff;
+  clip-path:polygon(0 var(--dcut),100% 0,100% calc(100% - var(--dcut)),0 100%);
+  margin-block:calc(var(--dcut) * -1);
+  padding-block:calc(var(--dcut) + clamp(60px,8vw,112px))}
+.dark--top{clip-path:polygon(0 var(--dcut),100% 0,100% 100%,0 100%);margin-bottom:0;padding-bottom:clamp(60px,8vw,100px)}
+.dark__bg{position:absolute;inset:0;background:url(images/contours.svg) center/cover no-repeat;opacity:.13;pointer-events:none}
+.dark .wrap{position:relative}
+.light{padding-block:clamp(64px,9vw,120px)}
+.sec-head{max-width:46rem;margin-bottom:clamp(30px,4vw,52px)}
+.sec-head h2{font-size:clamp(1.95rem,4vw,3.2rem);font-weight:800;text-wrap:balance}
+.sec-head p{margin-top:16px;color:var(--slate);max-width:40em}
+.dark .sec-head p{color:#B7BEC9}
+
+/* layer viewer */
+.layers>*,.integ>*,.contact>*,.hero__grid>*,.sim__grid>*{min-width:0}
+.layers{display:grid;grid-template-columns:1.65fr 1fr;gap:clamp(20px,3vw,40px);align-items:start}
+.stage{position:relative;aspect-ratio:1024/559;background:var(--ink-2);overflow:hidden;cursor:ew-resize;touch-action:pan-y;user-select:none;-webkit-user-select:none;--pos:50%;
+  clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)}
+.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
+.stage .over{clip-path:inset(0 0 0 var(--pos))}
+.divider{position:absolute;top:0;bottom:0;left:var(--pos);width:44px;margin-left:-22px;display:grid;place-items:center;outline-offset:-3px}
+.divider::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 0 1px rgba(17,21,27,.35)}
+.grip{position:relative;width:44px;height:44px;background:var(--red);display:grid;place-items:center;clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%)}
+.grip svg{width:22px;height:22px;color:#fff}
+.tag{position:absolute;bottom:14px;padding:6px 12px;background:rgba(17,21,27,.82);color:#fff;font-size:.82rem;font-weight:600;pointer-events:none}
+.tag--l{left:14px}.tag--r{right:14px;background:var(--red)}
+.stage.is-single .over,.stage.is-single .divider,.stage.is-single .tag--l{display:none}
+.stage.is-single{cursor:default}
+.chips{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
+.lchip{position:relative;display:block;padding:0;border:0;background:var(--ink-2);color:#fff;cursor:pointer;text-align:left;overflow:hidden;aspect-ratio:176/96;font:inherit}
+.lchip img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;transition:opacity .2s,transform .3s}
+.lchip span{position:absolute;left:0;right:0;bottom:0;padding:16px 8px 6px;font-size:.74rem;font-weight:600;line-height:1.15;background:linear-gradient(transparent,rgba(17,21,27,.92))}
+.lchip:hover img{opacity:.85}
+.lchip[aria-pressed="true"]{box-shadow:inset 0 0 0 3px var(--red)}
+.lchip[aria-pressed="true"] img{opacity:1}
+.lchip:focus-visible{outline-offset:2px}
+.info{padding-top:4px}
+.info h3{font-size:clamp(1.4rem,2.4vw,1.9rem);font-weight:700}
+.info p{margin-top:12px;color:#C5CBD5}
+.legend{margin-top:22px;padding-top:18px;border-top:1px solid var(--ink-3);display:grid;gap:9px;font-size:.93rem}
+.legend li{display:flex;align-items:center;gap:12px}
+.legend li i{flex:none;width:22px;height:14px}
+.ramp{height:14px;width:100%}
+.ramp-lab{display:flex;justify-content:space-between;font-size:.88rem;color:#C5CBD5;margin-top:6px}
+.note{margin-top:22px;font-size:.84rem;color:#8993A1}
+.hint{display:flex;align-items:center;gap:10px;margin-top:20px;font-size:.9rem;color:#C5CBD5}
+.hint svg{width:20px;height:20px;color:var(--red-l)}
+
+/* services bento */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.tile{position:relative;padding:clamp(24px,3vw,38px);overflow:hidden;--cut:26px;
+  clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,0 100%)}
+.tile h3{font-size:clamp(1.35rem,2.2vw,1.8rem);font-weight:700}
+.tile p{margin-top:10px;max-width:32em}
+.tile ul{margin-top:18px;display:grid;gap:8px}
+.tile li{display:flex;gap:12px;align-items:flex-start;font-size:.98rem}
+.tile li::before{content:"";flex:none;width:10px;height:10px;margin-top:8px;background:currentColor;clip-path:polygon(0 0,70% 0,100% 30%,100% 100%,0 100%)}
+.t-eo{grid-column:span 7;background:var(--mist);display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+.t-eo img{width:auto;max-width:none;align-self:end;margin:0 calc(-1*clamp(24px,3vw,38px)) calc(-1*clamp(24px,3vw,38px));height:210px;object-fit:cover}
+.t-ai{grid-column:span 5;background:var(--ink);color:#fff}
+.t-ai li::before{background:var(--red-l)}
+.t-ai p{color:#C5CBD5}
+.t-web{grid-column:span 5;background:var(--mist)}
+.t-web li::before{background:var(--red)}
+.t-auto{grid-column:span 7;background:var(--red);color:#fff;background-image:linear-gradient(135deg,var(--red) 0%,var(--red-d) 100%)}
+.t-auto p{color:#FFE3E5}
+
+/* integrations */
+.integ{display:grid;grid-template-columns:1fr 1.12fr;gap:clamp(28px,4vw,64px);align-items:start}
+.caps{display:grid;gap:0}
+.cap{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:20px 0;border-top:1px solid var(--ink-3)}
+.cap:first-child{border-top:0;padding-top:0}
+.cap__ic{width:44px;height:44px;background:var(--red);display:grid;place-items:center;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+.cap__ic svg{width:22px;height:22px;color:#fff}
+.cap h3{font-size:1.15rem;font-weight:700;letter-spacing:-.015em}
+.cap p{margin-top:4px;color:#B7BEC9;font-size:.98rem}
+.more{margin-top:8px;padding-top:20px;border-top:1px solid var(--ink-3);color:#fff;font-weight:500}
+.sim{background:var(--ink-2);padding:clamp(16px,2vw,24px);position:sticky;top:90px;
+  clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)}
+.tabs{display:flex;gap:6px;margin-bottom:18px}
+.tab{flex:1;min-height:46px;border:0;background:var(--ink);color:#B7BEC9;font:600 .96rem/1 var(--body);cursor:pointer;padding:0 14px;transition:background .2s,color .2s}
+.tab[aria-selected="true"]{background:var(--red);color:#fff}
+.tab:not([aria-selected="true"]):hover{color:#fff;background:var(--ink-3)}
+.sim__grid{display:grid;grid-template-columns:268px 1fr;gap:16px;align-items:stretch}
+.phone{background:#fff;color:var(--ink);min-height:460px;padding:18px 16px 16px;display:flex;flex-direction:column;position:relative;border-top:10px solid var(--ink-3);
+  box-shadow:inset 0 0 0 1px #d3d7dd;font-size:.9rem;line-height:1.45}
+.ph-brand{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:1rem;margin-bottom:14px}
+.ph-brand img{height:22px;width:auto}
+.ph-item{display:flex;justify-content:space-between;gap:10px;padding:12px;background:var(--mist);margin-bottom:14px}
+.ph-item b{white-space:nowrap}
+.phone label{display:block;font-size:.8rem;font-weight:600;color:var(--slate);margin-bottom:6px}
+.phone input{width:100%;height:46px;border:2px solid var(--line);padding:0 12px;font:500 1rem var(--body);color:var(--ink);background:#fff;border-radius:0}
+.phone input:focus{outline:none;border-color:var(--ink)}
+.ph-btn{margin-top:14px;width:100%;min-height:48px;border:0;background:var(--red);color:#fff;font:600 .98rem var(--body);cursor:pointer}
+.ph-btn:hover{background:var(--red-d)}
+.ph-btn--ghost{background:var(--mist);color:var(--ink)}
+.ph-btn--ghost:hover{background:var(--line)}
+.ph-note{margin-top:auto;padding-top:14px;font-size:.78rem;color:var(--slate)}
+.ph-prompt{margin:auto 0;background:var(--ink);color:#fff;padding:18px 16px}
+.ph-prompt small{display:block;font-weight:600;color:#B7BEC9;margin-bottom:6px}
+.dots{display:flex;gap:10px;margin:14px 0}
+.dots i{width:16px;height:16px;border:2px solid #fff;border-radius:50%;transition:background .15s}
+.dots i.on{background:#fff}
+.row{display:flex;gap:8px}
+.row .ph-btn{margin-top:0}
+.ph-ok{margin:auto 0;text-align:center}
+.ph-ok .tick{width:64px;height:64px;margin:0 auto 14px;background:var(--red);display:grid;place-items:center;clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%)}
+.ph-ok .tick svg{width:30px;height:30px;color:#fff}
+.ph-ok h4{font-size:1.3rem}
+.ph-ok p{color:var(--slate);margin-top:6px}
+.mail{border:1px solid var(--line);margin:4px 0 12px}
+.mail__h{display:flex;gap:10px;align-items:center;padding:10px;border-bottom:1px solid var(--line);font-size:.8rem;line-height:1.3}
+.mail__h i{flex:none;width:30px;height:30px;background:var(--red);display:grid;place-items:center;color:#fff;font:700 .85rem var(--display);font-style:normal}
+.mail__b{padding:12px;text-align:center;font-size:.82rem;color:var(--slate)}
+.mail__b strong{display:block;margin-top:4px;font-family:var(--display);font-size:1.75rem;letter-spacing:.22em;color:var(--ink);text-indent:.22em}
+.timer{font-size:.8rem;color:var(--slate);margin-top:8px}
+.err{color:var(--red-d);font-size:.84rem;font-weight:600;margin-top:8px;min-height:1.2em}
+.console{background:#0A0D11;color:#C5CBD5;padding:14px;font:12.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;min-height:460px;max-height:460px;overflow:auto;display:flex;flex-direction:column;gap:6px}
+.console h4{font:600 .8rem var(--body);color:#8993A1;letter-spacing:0;margin-bottom:4px}
+.console p{word-break:break-word;animation:fade .3s both}
+.console .t{color:#5C6675;margin-right:6px}
+.console .req{color:#fff}.console .res{color:#9BD3A8}.console .bad{color:#FF8A92}.console .evt{color:#F5C16C}
+.console .idle{color:#5C6675}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* academy / marketplace */
+.split{display:grid;grid-template-columns:1fr 1fr}
+.panel{padding:clamp(40px,6vw,88px) clamp(24px,5vw,64px)}
+.panel__in{max-width:30rem}
+.panel h2{font-size:clamp(1.8rem,3.4vw,2.7rem);font-weight:800;text-wrap:balance}
+.panel p{margin-top:14px}
+.panel ul{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+.panel li{display:flex;gap:10px;align-items:flex-start;font-weight:500;font-size:.98rem;line-height:1.35}
+.panel li::before{content:"";flex:none;width:10px;height:10px;margin-top:6px;background:currentColor;clip-path:polygon(0 0,70% 0,100% 30%,100% 100%,0 100%)}
+.panel .btn{margin-top:30px}
+.p-academy{background:var(--mist);justify-self:stretch}
+.p-academy .panel__in{margin-left:auto}
+.p-academy li::before{background:var(--red)}
+.p-academy p{color:#39414d}
+.p-market{background:linear-gradient(150deg,var(--red) 0%,var(--red-d) 100%);color:#fff;position:relative;overflow:hidden}
+.p-market p{color:#FFE3E5}
+.p-market::before{content:"";position:absolute;inset:0;background:url(images/contours.svg) center/cover;opacity:.18;mix-blend-mode:soft-light;pointer-events:none}
+.p-market .panel__in{position:relative}
+
+/* approach */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:s;position:relative}
+.step{position:relative;padding:0 clamp(12px,2vw,28px) 0 0}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:52px;height:52px;background:var(--ink);color:#fff;font:700 1.2rem var(--display);
+  clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%);position:relative;z-index:1}
+.step::after{content:"";position:absolute;top:25px;left:52px;right:0;height:2px;background:var(--line)}
+.step:last-child::after{display:none}
+.step h3{margin-top:20px;font-size:1.3rem;font-weight:700}
+.step p{margin-top:8px;color:var(--slate);font-size:.99rem}
+.sectors{margin-top:clamp(48px,6vw,84px);display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(24px,4vw,64px)}
+.sector{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);gap:16px;padding:20px 0;border-top:2px solid var(--ink);align-items:baseline}
+.sector h3{font-size:1.25rem;font-weight:700}
+.sector p{color:var(--slate);font-size:.97rem}
+
+/* network band */
+.band{position:relative;z-index:0;background:linear-gradient(135deg,var(--red) 0%,var(--red-d) 100%);color:#fff;padding:clamp(40px,5vw,64px) 0 calc(var(--dcut) + clamp(40px,5vw,64px))}
+.band .wrap{display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.band h2{font-size:clamp(1.5rem,3vw,2.3rem);font-weight:800;max-width:24ch;text-wrap:balance}
+.band p{margin-top:10px;color:#FFE3E5;max-width:44em}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(28px,5vw,72px);align-items:start}
+.contact h2{font-size:clamp(2rem,4.4vw,3.5rem);font-weight:800;text-wrap:balance}
+.contact__lede{margin-top:16px;color:#B7BEC9;max-width:30em}
+.contact dl{margin:34px 0 0;display:grid;gap:18px}
+.contact dt{font-size:.88rem;color:#8993A1;font-weight:600}
+.contact dd{margin:2px 0 0;font-weight:500;font-size:1.08rem}
+.contact dd a{text-decoration:none;border-bottom:2px solid var(--red)}
+.contact dd a:hover{color:var(--red-l)}
+.form{background:#fff;color:var(--ink);padding:clamp(22px,3vw,36px);display:grid;gap:18px;
+  clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)}
+.form label{display:block;font-weight:600;font-size:.92rem;margin-bottom:6px}
+.form input,.form select,.form textarea{width:100%;border:2px solid var(--line);background:#fff;padding:13px 14px;font:400 1rem var(--body);color:var(--ink);border-radius:0;min-height:50px}
+.form textarea{min-height:130px;resize:vertical}
+.form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--ink)}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form small{color:var(--slate);font-size:.85rem}
+
+/* footer */
+.foot{background:var(--ink);color:#B7BEC9;padding:0 0 32px}
+.foot__in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:28px;padding-top:36px;border-top:1px solid var(--ink-3)}
+.foot img{height:38px;width:auto}
+.foot nav{display:flex;flex-wrap:wrap;gap:8px 24px}
+.foot nav a{text-decoration:none;font-weight:500;color:#fff}
+.foot nav a:hover{color:var(--red-l)}
+.foot__legal{width:100%;font-size:.88rem}
+
+/* responsive */
+@media (max-width:1020px){
+  .hero__grid{grid-template-columns:1fr}
+  .hero__visual{max-width:620px;margin:20px auto 0}
+  .layers{grid-template-columns:1fr}
+  .integ{grid-template-columns:1fr}
+  .sim{position:relative;top:0}
+  .t-eo,.t-ai,.t-web,.t-auto{grid-column:span 12}
+  .split{grid-template-columns:1fr}
+  .p-academy .panel__in{margin-left:0}
+  .contact{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr;row-gap:40px}
+  .step:nth-child(2)::after{display:none}
+}
+@media (max-width:1100px){
+  .burger{display:block}
+  .nav{position:absolute;left:0;right:0;top:72px;flex-direction:column;align-items:stretch;gap:0;background:#fff;padding:8px clamp(20px,5vw,48px) 22px;border-bottom:1px solid var(--line);box-shadow:0 18px 30px rgba(17,21,27,.1);display:none}
+  .nav.is-open{display:flex}
+  .nav a{padding:14px 0;border-bottom:1px solid var(--line);font-size:1.05rem}
+  .nav a:not(.btn)::after{display:none}
+  .nav .btn{margin-top:16px;border:0}
+}
+@media (max-width:640px){
+  .hdr__logo img{height:34px}
+  .chips{display:flex;overflow-x:auto;gap:8px;padding-bottom:8px;scroll-snap-type:x proximity}
+  .lchip{flex:0 0 124px;scroll-snap-align:start}
+  .sim__grid{grid-template-columns:1fr}
+  .phone{min-height:440px}
+  .console{min-height:200px;max-height:240px}
+  .steps{grid-template-columns:1fr}
+  .step::after{display:none}
+  .step{padding-bottom:4px;display:grid;grid-template-columns:52px 1fr;column-gap:16px}
+  .step::before{grid-row:span 2}
+  .step h3{margin-top:2px}
+  .sectors{grid-template-columns:1fr}
+  .sector{grid-template-columns:1fr;gap:4px}
+  .panel ul{grid-template-columns:1fr}
+  .form .two{grid-template-columns:1fr}
+  .lady{left:-3%;width:104%}
+  .chip{font-size:.78rem;padding:9px 14px 9px 9px;gap:9px}
+  .chip i{width:30px;height:30px}.chip i svg{width:16px;height:16px}
+  .chip b{font-size:.88rem}
+  .chip--stk{left:0}.chip--otp{right:0;top:30%}.chip--mail{left:0;bottom:6%}
+  .band .btn{width:100%}
+  .hero .cta .btn{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hdr" id="hdr">
+  <div class="wrap hdr__in">
+    <a class="hdr__logo" href="#top" aria-label="Geopram Technologies home"><img src="images/geopram-logo.png" alt="Geopram Technologies" width="150" height="40"></a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><span></span></button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#layers">Earth Observation</a>
+      <a href="#services">Services</a>
+      <a href="#integrations">Integrations</a>
+      <a href="academy.html">Academy</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="#approach">How we work</a>
+      <a class="btn btn--red" href="#contact">Start a project</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <h1>From satellite to payment: one team builds <em>all of it.</em></h1>
+      <p class="lede">Geopram Technologies joins Earth Observation, AI and software engineering. The map, the M-PESA checkout and the confirmation email come from the same hands, so they work together from day one.</p>
+      <div class="cta">
+        <a class="btn btn--red" href="#contact">Start a project</a>
+        <a class="btn btn--line" href="#layers">See what a satellite can tell you</a>
+      </div>
+      <ul class="hero__facts">
+        <li>Earth Observation, GIS and AI models for land, farms and cities</li>
+        <li>M-PESA STK Push, Gmail API and OTP verification that work first time</li>
+        <li>Websites, dashboards and automation built around how you actually work</li>
+      </ul>
+    </div>
+    <div class="hero__visual">
+      <div class="wedge-ink" aria-hidden="true"></div>
+      <div class="wedge-red" aria-hidden="true"></div>
+      <img class="lady" src="images/hero-consultant.webp" width="1100" height="739" alt="A smiling Geopram team member working on her laptop at a tidy desk">
+      <div class="chip chip--stk" aria-hidden="true">
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>
+        <div><b>STK Push confirmed</b><span>KES 1,000 received</span></div>
+      </div>
+      <div class="chip chip--otp" aria-hidden="true">
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="1"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></i>
+        <div><span>Your code</span><b class="code">482 913</b></div>
+      </div>
+      <div class="chip chip--mail" aria-hidden="true">
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg></i>
+        <div><b>Receipt sent</b><span>via Gmail API</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EARTH OBSERVATION VIEWER -->
+<section class="dark" id="layers" aria-labelledby="layers-h">
+  <div class="dark__bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="layers-h">One scene, ten layers</h2>
+      <p>Under every satellite picture sits information about heat, height, trees, roofs and water. We extract it and turn it into decisions you can act on. Drag across the image to compare.</p>
+    </div>
+    <div class="layers">
+      <div>
+        <div class="stage" id="stage">
+          <img id="base" src="images/01-satellite-imagery.jpg" width="1024" height="559" alt="Aerial image of a dense neighbourhood beside a river and a multi-lane highway">
+          <img id="over" class="over" src="images/02-land-cover.jpg" width="1024" height="559" alt="" aria-hidden="true">
+          <div class="divider" id="divider" role="slider" tabindex="0" aria-label="Compare imagery with the selected layer" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <span class="grip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span>
+          </div>
+          <span class="tag tag--l">Imagery</span>
+          <span class="tag tag--r" id="tagR">Land cover</span>
+        </div>
+        <div class="chips" id="chips" role="group" aria-label="Choose a layer"></div>
+      </div>
+      <div class="info" aria-live="polite">
+        <h3 id="lTitle"></h3>
+        <p id="lText"></p>
+        <ul class="legend" id="legend"></ul>
+        <p class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg>Drag the red handle or use the arrow keys.</p>
+        <p class="note">Illustrative outputs from our Earth Observation workflow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="light" id="services" aria-labelledby="serv-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="serv-h">Four things we do, built to work as one</h2>
+      <p>Start with one, add the others when you need them. Every project begins with your problem, not our toolbox.</p>
+    </div>
+    <div class="bento">
+      <article class="tile t-eo">
+        <div>
+          <h3>Earth Observation and GIS</h3>
+          <p>We turn satellite imagery, spatial data and remote-sensing information into maps and measurements people can use.</p>
+          <ul>
+            <li>Land use, land cover and change monitoring</li>
+            <li>Vegetation, canopy, heat and elevation analysis</li>
+            <li>Cadastral and parcel data pipelines</li>
+            <li>Environmental and agricultural monitoring</li>
+          </ul>
+        </div>
+        <img src="images/02-land-cover.jpg" loading="lazy" width="1024" height="559" alt="Land cover classification of an urban area, with built-up land in red, vegetation in green and a river in blue">
+      </article>
+      <article class="tile t-ai">
+        <h3>AI and machine learning</h3>
+        <p>Models that find patterns people can't see by eye, built for the data and decision you actually have.</p>
+        <ul>
+          <li>Image classification and computer vision</li>
+          <li>Predictive and suitability modelling</li>
+          <li>Deep learning on satellite imagery</li>
+          <li>Business and institutional intelligence</li>
+        </ul>
+      </article>
+      <article class="tile t-web">
+        <h3>Websites and information systems</h3>
+        <p>Platforms tailored to the way your team works, with the data behind them kept safe and organised.</p>
+        <ul>
+          <li>Websites, dashboards and client portals</li>
+          <li>Databases and land information systems</li>
+          <li>Admin consoles with roles and audit trails</li>
+          <li>PDF and Excel reports on demand</li>
+        </ul>
+      </article>
+      <article class="tile t-auto">
+        <h3>Automation and integrations</h3>
+        <p>Cut the repetitive work. Payments, emails, backups and notifications run on their own, and you only see the exceptions.</p>
+        <ul>
+          <li>M-PESA STK Push checkout and payment callbacks</li>
+          <li>Gmail API email, receipts and notifications</li>
+          <li>OTP verification and secure sign-in</li>
+          <li>Scheduled syncs to Google Drive and Sheets</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATIONS -->
+<section class="dark" id="integrations" aria-labelledby="int-h">
+  <div class="dark__bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="int-h">Payments, email and verification that work the first time</h2>
+      <p>Most platforms stall on the same three things: getting paid, sending reliable email and proving who someone is. We set them up properly, then test every failure path.</p>
+    </div>
+    <div class="integ">
+      <div class="caps">
+        <div class="cap">
+          <div class="cap__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="1.5"/><path d="M11 18h2"/></svg></div>
+          <div><h3>M-PESA STK Push</h3><p>The payment prompt appears on your customer's phone straight from your checkout. We handle the callback and mark the order paid, cancelled or failed.</p></div>
+        </div>
+        <div class="cap">
+          <div class="cap__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div>
+          <div><h3>Payment reconciliation</h3><p>Receipts matched to orders and customers, with duplicates and failed attempts flagged for you.</p></div>
+        </div>
+        <div class="cap">
+          <div class="cap__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg></div>
+          <div><h3>Gmail API setup</h3><p>OAuth2 connection, verified sender and branded templates, so receipts, invoices and alerts leave from your own address and land in the inbox.</p></div>
+        </div>
+        <div class="cap">
+          <div class="cap__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="1"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div>
+          <div><h3>OTP verification</h3><p>One-time codes with expiry, retry limits and secure storage, for sign-up, password reset and sensitive actions.</p></div>
+        </div>
+        <div class="cap">
+          <div class="cap__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17a4 4 0 010-8 5 5 0 019.6-1.3A4.5 4.5 0 0118 17z"/></svg></div>
+          <div><h3>Drive and Sheets sync</h3><p>Automatic backups and live reports in the tools your team already opens every morning.</p></div>
+        </div>
+        <p class="more">And more: webhooks, B2C and C2B flows, role-based access and connections to the systems you already use.</p>
+      </div>
+
+      <div class="sim" id="sim">
+        <div class="tabs" role="tablist" aria-label="Integration demos">
+          <button class="tab" role="tab" id="tab-stk" aria-selected="true" aria-controls="simPane" data-mode="stk">STK Push</button>
+          <button class="tab" role="tab" id="tab-otp" aria-selected="false" aria-controls="simPane" data-mode="otp" tabindex="-1">Email OTP</button>
+        </div>
+        <div class="sim__grid" id="simPane" role="tabpanel" aria-labelledby="tab-stk">
+          <div class="phone" id="phone"></div>
+          <div class="console" id="console" aria-live="polite" aria-label="What happens behind the scenes"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACADEMY + MARKETPLACE -->
+<section id="academy" aria-label="Geopram Academy and Marketplace">
+  <div class="split">
+    <div class="panel p-academy">
+      <div class="panel__in">
+        <h2>Geopram Academy: learn by building real projects</h2>
+        <p>Hands-on training for students, professionals and institutions. You leave with skills you can use on Monday, not slides you will forget.</p>
+        <ul>
+          <li>GIS and remote sensing</li>
+          <li>Earth Observation</li>
+          <li>Google Earth Engine</li>
+          <li>Python</li>
+          <li>Web development</li>
+          <li>AI and machine learning</li>
+          <li>Deep learning</li>
+          <li>Digital automation</li>
+        </ul>
+        <a class="btn btn--ink" href="#contact" data-topic="Training with Geopram Academy">Ask about training</a>
+      </div>
+    </div>
+    <div class="panel p-market">
+      <div class="panel__in">
+        <h2>Geopram Marketplace: tools today, experts tomorrow</h2>
+        <p>Useful digital products in one place, plus a way to reach the developers, trainers and geospatial specialists who can solve the rest.</p>
+        <ul>
+          <li>Software tools</li>
+          <li>GIS resources</li>
+          <li>Website templates</li>
+          <li>Automation workflows</li>
+          <li>Learning materials</li>
+          <li>Technology providers</li>
+        </ul>
+        <a class="btn btn--white" href="marketplace.html" data-topic="Geopram Marketplace">Visit the marketplace</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section class="light" id="approach" style="background:var(--white)" aria-labelledby="app-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="app-h">We start with the problem, not the technology</h2>
+      <p>Technology is only useful when it fits the people using it. Here is how every project runs.</p>
+    </div>
+    <ol class="steps" style="list-style:none;margin:0;padding:0">
+      <li class="step"><h3>Understand</h3><p>We learn how your work runs today, where it slows down and what a good result looks like.</p></li>
+      <li class="step"><h3>Choose the right tool</h3><p>Maps, models, software or automation. We pick what fits your data and budget.</p></li>
+      <li class="step"><h3>Build and connect</h3><p>We deliver in working stages and wire in payments, email and verification as we go.</p></li>
+      <li class="step"><h3>Support and improve</h3><p>We train your team, fix what real use reveals and turn repeat solutions into products.</p></li>
+    </ol>
+
+    <div class="sectors" role="list">
+      <div class="sector" role="listitem"><h3>Land information</h3><p>Parcel databases, searchable records and printable reports.</p></div>
+      <div class="sector" role="listitem"><h3>Agriculture</h3><p>Crop and field monitoring from satellite data.</p></div>
+      <div class="sector" role="listitem"><h3>Environment</h3><p>Water, vegetation and heat tracked over time.</p></div>
+      <div class="sector" role="listitem"><h3>Urban planning</h3><p>Settlement, roads and green space mapped at building level.</p></div>
+      <div class="sector" role="listitem"><h3>Health access</h3><p>Find the communities that sit furthest from a facility.</p></div>
+      <div class="sector" role="listitem"><h3>Education</h3><p>Practical training and learning platforms for institutions.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- NETWORK BAND -->
+<section class="band" aria-label="Collaboration">
+  <div class="wrap">
+    <div>
+      <h2>Have a problem but not the team? We bring the team.</h2>
+      <p>Through our network of developers, trainers and geospatial specialists we scope the work, coordinate the project and support the rollout.</p>
+    </div>
+    <a class="btn btn--white" href="#contact">Talk to us</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="dark dark--top" id="contact" aria-labelledby="con-h">
+  <div class="dark__bg" aria-hidden="true"></div>
+  <div class="wrap contact">
+    <div>
+      <h2 id="con-h">Tell us the problem. We'll tell you how we'd solve it.</h2>
+      <p class="contact__lede">Share a few lines about what you need. You'll get a straight answer on approach, timeline and cost.</p>
+      <dl>
+        <div><dt>Email</dt><dd><a href="mailto:celestakim018@gmail.com">celestakim018@gmail.com</a></dd></div>
+        <div><dt>Website</dt><dd><a href="https://geopramtech.co.ke">geopramtech.co.ke</a></dd></div>
+        <div><dt>Based in</dt><dd>Nyeri, Kenya</dd></div>
+      </dl>
+    </div>
+    <form class="form" id="form" novalidate>
+      <div class="two">
+        <div><label for="f-name">Your name</label><input id="f-name" name="name" autocomplete="name" required></div>
+        <div><label for="f-mail">Your email</label><input id="f-mail" name="email" type="email" autocomplete="email" required></div>
+      </div>
+      <div>
+        <label for="f-topic">What do you need?</label>
+        <select id="f-topic" name="topic">
+          <option>Mapping or Earth Observation</option>
+          <option>AI or machine learning</option>
+          <option>Website or information system</option>
+          <option>M-PESA STK Push, Gmail API or OTP integration</option>
+          <option>Automation</option>
+          <option>Training with Geopram Academy</option>
+          <option>Geopram Marketplace</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div>
+        <label for="f-msg">Tell us about it</label>
+        <textarea id="f-msg" name="message" required></textarea>
+      </div>
+      <button class="btn btn--red" type="submit">Send by email</button>
+      <small id="f-help">This opens your email app with the message ready to send.</small>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__in">
+      <img src="images/geopram-logo-light.png" alt="Geopram Technologies" width="140" height="38">
+      <nav aria-label="Footer">
+        <a href="#layers">Earth Observation</a>
+        <a href="#services">Services</a>
+        <a href="#integrations">Integrations</a>
+        <a href="#academy">Academy</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <p class="foot__legal">&copy; <span id="yr">2026</span> Geopram Technologies, Nyeri, Kenya. Build around real needs, deliver solutions people can trust.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+  /* header */
+  var hdr=$('#hdr'),burger=$('#burger'),nav=$('#nav');
+  function stuck(){hdr.classList.toggle('is-stuck',window.scrollY>8)}
+  stuck();window.addEventListener('scroll',stuck,{passive:true});
+  burger.addEventListener('click',function(){
+    var o=nav.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded',o);burger.setAttribute('aria-label',o?'Close menu':'Open menu');
+  });
+  $$('#nav a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('is-open');burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','Open menu')})});
+  $('#yr').textContent=new Date().getFullYear();
+
+  /* ---------- layer viewer ---------- */
+  var ramp=function(css,a,b){return {ramp:css,from:a,to:b}};
+  var sw=function(a){return {sw:a}};
+  var LAYERS=[
+    {n:'Imagery',f:'01-satellite-imagery',t:'Very high-resolution imagery',x:'The starting point: a clear aerial picture of roofs, roads, river and open ground. Every other layer is derived from it.',l:null},
+    {n:'Land cover',f:'02-land-cover',t:'Land cover classification',x:'Each pixel is sorted into built-up land, trees, grass, water or bare ground. Compare years and you can see exactly where a city is growing.',l:sw([['#E10000','Built-up'],['#1F5C14','Trees'],['#3C9A12','Grass'],['#3F6FB5','Water'],['#D9C08F','Bare ground and paths']])},
+    {n:'Building types',f:'03-building-types',t:'Buildings and surfaces',x:'Structures separated by type and material, so dense housing, apartment blocks and other buildings can be counted and measured.',l:sw([['#E10000','Dense roofing'],['#E8B923','Apartment blocks'],['#1BA3A3','Other structures'],['#7C7F85','Roads'],['#1E4FA8','Water']])},
+    {n:'Surface heat',f:'04-surface-heat',t:'Surface heat',x:'Heat settles on tarmac and dense roofing while trees and water stay cooler. This shows where shade and cooling projects would help most.',l:ramp('linear-gradient(90deg,#1A3FD0,#1FB8B8,#9BE02A,#F6D31A,#F26A1B,#E3126B)','Cooler','Hotter')},
+    {n:'Roof heat',f:'05-roof-heat-exposure',t:'Roof heat exposure',x:'Roofs ranked by how much heat they hold. A fast guide for cool-roof programmes, solar planning and housing upgrades.',l:ramp('linear-gradient(90deg,#1CB35A,#E8D21A,#F28A1B,#E5242B,#D1189A)','Lower exposure','Higher exposure')},
+    {n:'Spectral index',f:'06-spectral-index',t:'Spectral index map',x:'Several satellite bands combined into one picture that separates water, roofing materials and plants that look alike to the human eye.',l:ramp('linear-gradient(90deg,#3B1C9A,#1FB8B8,#9BE02A,#F6A21A,#E3126B)','Low value','High value')},
+    {n:'Elevation',f:'07-elevation',t:'Elevation model',x:'Ground and rooftop height from a digital elevation model. The starting point for flood paths, drainage and slope analysis.',l:ramp('linear-gradient(90deg,#2B2BC8,#18B7E0,#6BD66B,#EBE04A,#F28B2B,#E5242B)','Low','High')},
+    {n:'Vegetation',f:'08-vegetation-health',t:'Vegetation health',x:'Built-up land is masked out so only living vegetation shows, from thin grass to dense tree crowns. Useful for farms, parks and riverbank checks.',l:ramp('linear-gradient(90deg,#1FA3C8,#37D3A0,#B8E02A,#F6D31A,#E3126B)','Sparse','Dense')},
+    {n:'Canopy height',f:'09-canopy-height',t:'Tree canopy height',x:'How tall every tree is, measured in metres. It separates young planting from mature canopy and tracks carbon and shade.',l:ramp('linear-gradient(90deg,#1E2FB5,#1FB8D0,#3CCB3C,#E0D82A,#D6244B,#F3C6D6)','0 m','20 m and above')},
+    {n:'Vector map',f:'10-vector-map',t:'Clean vector map',x:'Buildings, roads, water and green space traced into tidy shapes you can load straight into any GIS, database or web map.',l:sw([['#F2799B','Dense housing'],['#2EC4D8','Apartment blocks'],['#7C7F85','Roads'],['#4DA24A','Green space'],['#3F7FC4','Water']])}
+  ];
+  var stage=$('#stage'),over=$('#over'),divider=$('#divider'),tagR=$('#tagR'),chips=$('#chips');
+  var lTitle=$('#lTitle'),lText=$('#lText'),legend=$('#legend');
+  var cur=1,pos=50;
+
+  LAYERS.forEach(function(L,i){
+    var b=document.createElement('button');
+    b.type='button';b.className='lchip';b.setAttribute('aria-pressed','false');
+    var num=('0'+(i+1)).slice(-2);
+    b.innerHTML='<img src="images/thumbs/'+num+'.jpg" alt="" loading="lazy" width="176" height="96"><span>'+L.n+'</span>';
+    b.addEventListener('click',function(){select(i)});
+    chips.appendChild(b);
+  });
+  function setPos(p){
+    pos=Math.max(0,Math.min(100,p));
+    stage.style.setProperty('--pos',pos+'%');
+    divider.setAttribute('aria-valuenow',Math.round(pos));
+  }
+  function select(i){
+    cur=i;var L=LAYERS[i];
+    $$('.lchip',chips).forEach(function(c,k){c.setAttribute('aria-pressed',k===i?'true':'false')});
+    stage.classList.toggle('is-single',i===0);
+    if(i>0){over.src='images/'+L.f+'.jpg';tagR.textContent=L.n;tagR.style.display=''}else{tagR.style.display='none'}
+    lTitle.textContent=L.t;lText.textContent=L.x;
+    legend.innerHTML='';
+    if(L.l&&L.l.sw){L.l.sw.forEach(function(s){var li=document.createElement('li');li.innerHTML='<i style="background:'+s[0]+'"></i>'+s[1];legend.appendChild(li)})}
+    else if(L.l&&L.l.ramp){var li=document.createElement('li');li.style.display='block';li.innerHTML='<div class="ramp" style="background:'+L.l.ramp+'"></div><div class="ramp-lab"><span>'+L.l.from+'</span><span>'+L.l.to+'</span></div>';legend.appendChild(li)}
+    legend.style.display=L.l?'':'none';
+    legend.style.borderTop=L.l?'':'0';
+  }
+  function fromEvent(e){var r=stage.getBoundingClientRect();setPos((e.clientX-r.left)/r.width*100)}
+  var drag=false;
+  stage.addEventListener('pointerdown',function(e){if(cur===0)return;drag=true;try{stage.setPointerCapture(e.pointerId)}catch(_){}fromEvent(e)});
+  stage.addEventListener('pointermove',function(e){if(drag)fromEvent(e)});
+  ['pointerup','pointercancel','lostpointercapture'].forEach(function(n){stage.addEventListener(n,function(){drag=false})});
+  divider.addEventListener('keydown',function(e){
+    var s=e.shiftKey?10:3;
+    if(e.key==='ArrowLeft'||e.key==='ArrowDown'){setPos(pos-s);e.preventDefault()}
+    else if(e.key==='ArrowRight'||e.key==='ArrowUp'){setPos(pos+s);e.preventDefault()}
+    else if(e.key==='Home'){setPos(0);e.preventDefault()}
+    else if(e.key==='End'){setPos(100);e.preventDefault()}
+  });
+  setPos(50);select(1);
+
+  /* ---------- integration simulator (no network, demo only) ---------- */
+  var phone=$('#phone'),con=$('#console'),pane=$('#simPane'),tabs=$$('.tab');
+  var mode='stk',timers=[],cd=null;
+  function clearTimers(){timers.forEach(clearTimeout);timers=[];if(cd){clearInterval(cd);cd=null}}
+  function later(fn,ms){timers.push(setTimeout(fn,ms))}
+  function ts(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':'+('0'+d.getSeconds()).slice(-2)}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function log(cls,txt){var p=document.createElement('p');p.className=cls;p.innerHTML='<span class="t">'+ts()+'</span>'+esc(txt);con.appendChild(p);con.scrollTop=con.scrollHeight}
+  function resetConsole(t){con.innerHTML='<h4>'+t+'</h4><p class="idle">Waiting for you to try the demo.</p>'}
+  function clearIdle(){var i=$('.idle',con);if(i)i.remove()}
+  var brand='<div class="ph-brand"><img src="images/geopram-mark.png" alt="">Geopram Academy</div>';
+  var tick='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  function rnd(n,a){var s='';for(var i=0;i<n;i++)s+=a.charAt(Math.floor(Math.random()*a.length));return s}
+
+  /* STK */
+  function stkStart(){
+    clearTimers();resetConsole('Behind the scenes: STK Push');
+    phone.innerHTML=brand+'<div class="ph-item"><span>GIS starter session</span><b>KES 1,000</b></div>'+
+      '<label for="ph-no">M-PESA number</label><input id="ph-no" type="tel" inputmode="tel" value="0712 345 678" autocomplete="off">'+
+      '<button class="ph-btn" id="pay" type="button">Pay with M-PESA</button><p class="ph-note">Demo only. Nothing is sent anywhere.</p>';
+    $('#pay').addEventListener('click',stkPrompt);
+  }
+  function stkPrompt(){
+    clearIdle();
+    var no=($('#ph-no').value||'').replace(/\s+/g,'')||'07XXXXXXXX';
+    var ck='ws_CO_'+rnd(10,'0123456789');
+    log('req','POST /api/mpesa/stkpush  amount=1000 phone='+no.slice(0,4)+'***'+no.slice(-3));
+    phone.innerHTML=brand+'<div class="ph-item"><span>GIS starter session</span><b>KES 1,000</b></div><p style="color:#5A6270">Check your phone for the M-PESA prompt…</p>'+
+      '<div class="ph-prompt"><small>M-PESA</small>Pay KES 1,000 to Geopram Technologies?<div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>'+
+      '<div class="row"><button class="ph-btn ph-btn--ghost" id="no" type="button">Cancel</button><button class="ph-btn" id="ok" type="button">Enter PIN</button></div></div>';
+    later(function(){log('res','200 OK  CheckoutRequestID='+ck)},350);
+    later(function(){log('evt','Customer prompt delivered, waiting for callback')},800);
+    $('#no').addEventListener('click',function(){
+      clearTimers();log('bad','Callback  ResultCode=1032  Request cancelled by user');log('evt','Order marked CANCELLED. Customer can retry.');
+      phone.innerHTML=brand+'<div class="ph-ok"><h4>Payment cancelled</h4><p>No money was taken. You can try again.</p><button class="ph-btn" id="again" type="button">Run the demo again</button></div>';
+      $('#again').addEventListener('click',stkStart);
+    });
+    $('#ok').addEventListener('click',function(){
+      var dots=$$('.dots i',phone),k=0;$('#ok').disabled=true;$('#no').disabled=true;
+      (function step(){ if(k<dots.length){dots[k++].classList.add('on');later(step,220)} else stkDone(ck) })();
+    });
+  }
+  function stkDone(ck){
+    var rc='S'+rnd(9,'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789');
+    log('res','Callback  ResultCode=0  Receipt='+rc);
+    later(function(){log('evt','Order #A-1024 marked PAID. Amount matches.')},500);
+    later(function(){log('req','gmail.users.messages.send  to=customer  template=receipt')},1000);
+    later(function(){log('res','200 OK  Receipt email sent')},1500);
+    later(function(){log('evt','Row appended to Google Sheet: payments')},1900);
+    phone.innerHTML=brand+'<div class="ph-ok"><div class="tick">'+tick+'</div><h4>Payment received</h4><p>KES 1,000 · '+rc+'<br>A receipt is on its way to your inbox.</p><button class="ph-btn ph-btn--ghost" id="again" type="button">Run the demo again</button></div>';
+    $('#again').addEventListener('click',stkStart);
+  }
+
+  /* OTP */
+  function otpStart(){
+    clearTimers();resetConsole('Behind the scenes: email OTP');
+    phone.innerHTML=brand+'<h4 style="font-size:1.25rem;margin-bottom:12px">Sign in</h4>'+
+      '<label for="ph-em">Email address</label><input id="ph-em" type="email" inputmode="email" value="you@example.com" autocomplete="off">'+
+      '<button class="ph-btn" id="send" type="button">Send code</button><p class="ph-note">Demo only. No email is really sent.</p>';
+    $('#send').addEventListener('click',function(){otpSend($('#ph-em').value||'you@example.com')});
+  }
+  function otpSend(email){
+    clearIdle();clearTimers();
+    var code=String(Math.floor(100000+Math.random()*900000)),tries=3,left=300;
+    log('req','POST /api/otp/request  email='+email);
+    later(function(){log('evt','Code generated, hashed and stored. Expires in 300 s.')},350);
+    later(function(){log('req','gmail.users.messages.send  to='+email)},800);
+    later(function(){log('res','200 OK  Message queued')},1250);
+    phone.innerHTML=brand+'<div class="mail"><div class="mail__h"><i>G</i><div><strong>Geopram Technologies</strong><br>Your verification code</div></div><div class="mail__b">Use this code to sign in<strong>'+code.slice(0,3)+' '+code.slice(3)+'</strong></div></div>'+
+      '<label for="ph-code">Enter the 6-digit code</label><input id="ph-code" inputmode="numeric" maxlength="6" autocomplete="off">'+
+      '<div class="err" id="err" role="alert"></div>'+
+      '<button class="ph-btn" id="ver" type="button">Verify</button>'+
+      '<p class="timer" id="timer">Code expires in 5:00</p>';
+    var timer=$('#timer');
+    cd=setInterval(function(){
+      left--;var m=Math.floor(left/60),s=('0'+(left%60)).slice(-2);
+      if(left<=0){clearInterval(cd);cd=null;timer.textContent='Code expired.';log('bad','Code expired. A new one is required.');var v=$('#ver');if(v){v.disabled=true}}
+      else timer.textContent='Code expires in '+m+':'+s;
+    },1000);
+    $('#ver').addEventListener('click',function(){
+      var val=($('#ph-code').value||'').replace(/\D/g,''),err=$('#err');
+      log('req','POST /api/otp/verify  code=******');
+      if(val===code){
+        clearInterval(cd);cd=null;
+        log('res','200 OK  Code matches. Session issued.');log('evt','OTP invalidated so it cannot be reused.');
+        phone.innerHTML=brand+'<div class="ph-ok"><div class="tick">'+tick+'</div><h4>You are verified</h4><p>Signed in as<br>'+esc(email)+'</p><button class="ph-btn ph-btn--ghost" id="again" type="button">Run the demo again</button></div>';
+        $('#again').addEventListener('click',otpStart);
+      }else{
+        tries--;
+        if(tries<=0){
+          clearInterval(cd);cd=null;log('bad','401  Too many attempts. Code locked.');
+          phone.innerHTML=brand+'<div class="ph-ok"><h4>Too many attempts</h4><p>For your security this code is now locked. Request a new one.</p><button class="ph-btn" id="again" type="button">Send a new code</button></div>';
+          $('#again').addEventListener('click',otpStart);
+        }else{
+          log('bad','401  Code does not match. '+tries+' attempt'+(tries===1?'':'s')+' left.');
+          err.textContent='That code doesn\u2019t match. '+tries+' attempt'+(tries===1?'':'s')+' left.';
+        }
+      }
+    });
+  }
+
+  function setMode(m){
+    mode=m;
+    tabs.forEach(function(t){var on=t.dataset.mode===m;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1});
+    pane.setAttribute('aria-labelledby','tab-'+m);
+    (m==='stk'?stkStart:otpStart)();
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){setMode(t.dataset.mode)});
+    t.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){var o=tabs.filter(function(x){return x!==t})[0];o.focus();setMode(o.dataset.mode)}
+    });
+  });
+  setMode('stk');
+
+  /* ---------- contact form -> mailto ---------- */
+  var form=$('#form');
+  $$('[data-topic]').forEach(function(a){a.addEventListener('click',function(){
+    var s=$('#f-topic');for(var i=0;i<s.options.length;i++){if(s.options[i].text===a.dataset.topic){s.selectedIndex=i}}
+  })});
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var n=$('#f-name'),m=$('#f-mail'),g=$('#f-msg'),help=$('#f-help');
+    if(!n.value.trim()||!/^\S+@\S+\.\S+$/.test(m.value)||!g.value.trim()){
+      help.textContent='Please add your name, a valid email and a short message.';help.style.color='#A8000B';
+      (!n.value.trim()?n:!/^\S+@\S+\.\S+$/.test(m.value)?m:g).focus();return;
+    }
+    help.style.color='';help.textContent='Opening your email app…';
+    var subject='Project enquiry: '+$('#f-topic').value;
+    var body='Name: '+n.value.trim()+'\nEmail: '+m.value.trim()+'\nInterest: '+$('#f-topic').value+'\n\n'+g.value.trim();
+    window.location.href='mailto:celestakim018@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+  });
+})();
+</script>
+</body>
+</html>
