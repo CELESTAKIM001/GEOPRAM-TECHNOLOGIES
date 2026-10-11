@@ -185,7 +185,7 @@ table{width:100%;border-collapse:collapse;font-size:.95rem}td,th{text-align:left
 <a class="hdr__logo" href="#" data-go="top" aria-label="Geopram Academy home"><img src="images/geopram-logo.png" alt="Geopram Technologies" width="150" height="40"></a>
 <button class="burger" id="burger" aria-expanded="false" aria-label="Open menu"><span></span></button>
 <nav class="nav" id="nav" aria-label="Main">
-<a href="#courses" data-go="courses">Courses</a><a href="#how" data-go="how">How it works</a><a href="#free" data-go="free">Free learning</a><a href="#gallery" data-go="gallery">Gallery</a><a href="#request" data-go="request">Request a course</a>
+<a href="#courses" data-go="courses">Courses</a><a href="#how" data-go="how">How it works</a><a href="#free" data-go="free">Free learning</a><a href="#gallery" data-go="gallery">Gallery</a><a href="#request" data-go="request">Request a course</a><a href="#tutor" id="tutorL">Teach with us</a>
 <a href="marketplace.html">Marketplace</a><span id="navAuth" style="display:contents"></span></nav></div></header>
 
 <main id="pub">
@@ -228,7 +228,7 @@ table{width:100%;border-collapse:collapse;font-size:.95rem}td,th{text-align:left
 <main id="dash" hidden style="padding-bottom:80px"><section class="dark dark--top" style="clip-path:none;padding-top:44px;margin:0"><div class="dark__bg"></div><div class="wrap"><h2 id="hi" style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800"></h2><div class="stats" id="stats"></div></div></section>
 <div class="wrap"><div class="dtabs" id="dt"><button data-t="learn">My learning</button><button data-t="browse">All courses</button><button data-t="pay">Payments</button><button data-t="cert">Certificates</button></div><div id="dv"></div></div></main>
 
-<footer class="foot"><div class="wrap"><div class="foot__in"><img src="images/geopram-logo-light.png" alt="Geopram Technologies" width="140" height="38"><nav aria-label="Footer"><a href="#courses" data-go="courses">Courses</a><a href="#free" data-go="free">Free learning</a><a href="#gallery" data-go="gallery">Gallery</a><a href="#request" data-go="request">Request a course</a></nav><p class="foot__legal">&copy; <span id="yr">2026</span> Geopram Academy, part of Geopram Technologies, Nyeri, Kenya.</p></div></div></footer>
+<footer class="foot"><div class="wrap"><div class="foot__in"><img src="images/geopram-logo-light.png" alt="Geopram Technologies" width="140" height="38"><nav aria-label="Footer"><a href="#courses" data-go="courses">Courses</a><a href="#free" data-go="free">Free learning</a><a href="#gallery" data-go="gallery">Gallery</a><a href="#request" data-go="request">Request a course</a><a href="forms/index.html">Forms</a><a href="academy.html#tutor">Teach with us</a><a href="admin.html">Admin</a></nav><p class="foot__legal">&copy; <span id="yr">2026</span> Geopram Academy, part of Geopram Technologies, Nyeri, Kenya.</p></div></div></footer>
 
 <dialog id="authD"><div class="dl"><button class="x" data-close aria-label="Close">&times;</button><h3 id="aT"></h3><form id="af" style="display:grid;gap:14px" novalidate>
 <div data-up><label for="a1">Full name</label><input id="a1" autocomplete="name"></div><div data-up><label for="a5">I want to</label><select id="a5"><option value="learner">Learn (student)</option><option value="tutor">Teach (tutor)</option></select></div><div data-up><label for="a2">M-PESA phone</label><input id="a2" type="tel" placeholder="07XX XXX XXX" autocomplete="tel"></div>
@@ -243,7 +243,7 @@ table{width:100%;border-collapse:collapse;font-size:.95rem}td,th{text-align:left
 
 <script>
 /* ===== EDIT ME: courses, prices (KES), events, videos ===== */
-const CFG={email:'celestakim018@gmail.com',
+const CFG={email:'info@geopramtech.co.ke',
 cats:{gis:'GIS & Earth Observation',ai:'Data & AI',web:'Web & software'},
 courses:[
 {id:'qgis',t:'QGIS Essentials',c:'gis',p:3000,d:'4 weeks',b:'Digitise, analyse and lay out maps in free, open-source QGIS.',i:'10-vector-map'},
@@ -267,7 +267,7 @@ const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelecto
 const jget=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??d}catch(e){return d}},jset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const kes=n=>n?'KES '+n.toLocaleString('en-KE'):'Free';
-const all=()=>[...CFG.courses,...jget('gp_courses',[])],cr=id=>all().find(c=>c.id===id);
+const allRaw=()=>[...CFG.courses,...jget('gp_courses',[])],all=()=>allRaw().filter(c=>!jget('gp_hc',[]).includes(c.id)),cr=id=>allRaw().find(c=>c.id===id);
 const lessons=c=>c.ls&&c.ls.length?c.ls:LES.map(t=>({t,v:CFG.lessonVideo[c.id]||''}));
 let me=jget('gp_me',null),pend=null,flt='all';
 const dat=()=>jget('gp_d_'+me.email,{en:{},pay:[]}),save=d=>jset('gp_d_'+me.email,d);
@@ -314,8 +314,8 @@ $('#aS').onclick=()=>auth(amode==='up'?'in':'up');
 $('#af').onsubmit=async e=>{e.preventDefault();const em=$('#a3').value.trim().toLowerCase(),pw=$('#a4').value,M=$('#aM'),U=jget('gp_users',{});
  if(!/^\S+@\S+\.\S+$/.test(em))return M.textContent='Enter a valid email address.';if(pw.length<6)return M.textContent='Use a password with at least 6 characters.';
  const h=await hash(pw);
- if(amode==='up'){const n=$('#a1').value.trim(),ph=$('#a2').value.trim();if(!n||!/^(\+?254|0)\d{9}$/.test(ph.replace(/\s/g,'')))return M.textContent='Add your name and a valid Kenyan phone number.';if(U[em])return M.textContent='That email is already registered. Please log in.';U[em]={n,ph,h,role:$('#a5').value,since:Date.now()};jset('gp_users',U)}
- else if(!U[em]||U[em].h!==h)return M.textContent='Email or password is incorrect.';
+ if(amode==='up'){const n=$('#a1').value.trim(),ph=$('#a2').value.trim();if(!n||!/^(\+?254|0)\d{9}$/.test(ph.replace(/\s/g,'')))return M.textContent='Add your name and a valid Kenyan phone number.';if(U[em])return M.textContent='That email is already registered. Please log in.';U[em]={n,ph,h,role:$('#a5').value,since:Date.now(),ap:$('#a5').value==='tutor'?0:1};jset('gp_users',U)}
+ else if(!U[em]||U[em].h!==h)return M.textContent='Email or password is incorrect.';if(U[em].sus)return M.textContent='This account is suspended. Please contact Geopram.';
  me={email:em,n:U[em].n,ph:U[em].ph,role:U[em].role||'learner'};jset('gp_me',me);$('#authD').close();$('#af').reset();drawNav();drawCat();toast('Welcome, '+me.n.split(' ')[0]+'!');
  if(pend){const p=pend;pend=null;enrol(p)}else dash(me.role==='tutor'?'mine':'learn')};
 
@@ -355,7 +355,7 @@ drawNav();drawCat();
 </script>
 <script>
 /* ===== roles, tutor dashboard, lesson videos, timetable, profile ===== */
-const TS=70,isT=()=>me&&me.role==='tutor';
+const TS=jget('gp_set',{}).ts||70,isT=()=>me&&me.role==='tutor';
 const ytid=s=>{s=(s||'').trim();const m=s.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/);return m?m[1]:/^[\w-]{11}$/.test(s)?s:''};
 const users=()=>jget('gp_users',{}),myC=()=>jget('gp_courses',[]).filter(c=>c.o===me.email);
 const pc=(x,c)=>Math.round(x.done.length/lessons(c).length*100);
@@ -370,7 +370,7 @@ function play(id){const c=cr(id),d=dat(),prev=!d.en[id],en=d.en[id]||{done:[]},L
  if(all&&!prev)$('#gc').onclick=()=>cert(id)};draw();$('#plD').showModal();$('#plD').onclose=()=>{if(!$('#dash').hidden)dash(curTab)}}
 function dash(t){$('#pub').hidden=true;$('#dash').hidden=false;$('#nav').classList.remove('is-open');$('#burger').setAttribute('aria-expanded','false');scrollTo(0,0);
  const d=dat(),ids=Object.keys(d.en).filter(i=>cr(i)),T=isT(),mine=myC(),mids=mine.map(c=>c.id);
- const tabs=T?[['mine','Teaching'],['new','Create course'],['stu','Students'],['earn','Earnings'],['learn','My learning'],['prof','Profile']]:[['learn','My learning'],['time','Timetable'],['browse','All courses'],['pay','Payments'],['cert','Certificates'],['prof','Profile']];
+ const tabs=T?[['mine','Teaching'],['new','Create course'],['stu','Students'],['earn','Earnings'],['frm','Forms'],['learn','My learning'],['prof','Profile']]:[['learn','My learning'],['time','Timetable'],['browse','All courses'],['pay','Payments'],['cert','Certificates'],['prof','Profile']];
  if(!tabs.some(x=>x[0]===t))t=tabs[0][0];curTab=t;
  $('#dt').innerHTML=tabs.map(([k,v])=>`<button data-t="${k}" aria-pressed="${k===t}">${v}</button>`).join('');
  $('#hi').textContent=(T?'Tutor dashboard: ':'Hello, ')+me.n.split(' ')[0];
@@ -384,10 +384,11 @@ function dash(t){$('#pub').hidden=true;$('#dash').hidden=false;$('#nav').classLi
  if(t==='time'){const R=[];ids.forEach(i=>(cr(i).ss||[]).forEach(x=>R.push({...x,c:cr(i)})));R.sort((a,b)=>a.d>b.d?1:-1);h=R.length?`<table><tr><th>When</th><th>Course</th><th>Format</th><th>Where</th></tr>${R.map(x=>`<tr><td>${new Date(x.d).toLocaleString('en-KE',{dateStyle:'medium',timeStyle:'short'})}</td><td>${esc(x.c.t)}</td><td>${esc(x.m)}</td><td>${/^https?:/.test(x.w)?`<a href="${esc(x.w)}" target="_blank" rel="noopener">Join link</a>`:esc(x.w)}</td></tr>`).join('')}</table>`:'<p>No sessions scheduled yet. Physical and live sessions from your tutors appear here.</p>'}
  if(t==='pay')h=d.pay.length?`<table><tr><th>Date</th><th>Course</th><th>Amount</th><th>Receipt</th></tr>${d.pay.map(p=>`<tr><td>${new Date(p.date).toLocaleDateString('en-KE')}</td><td>${esc((cr(p.id)||{t:p.id}).t)}</td><td>${kes(p.amt)}</td><td>${p.rc}</td></tr>`).join('')}</table>`:'<p>No payments yet. Free courses never need one.</p>';
  if(t==='cert')h=done.length?`<div class="grid">${done.map(i=>`<div class="box"><h3>${esc(cr(i).t)}</h3><p>Completed</p><p style="margin-top:12px"><button class="btn btn--red" data-ct="${i}">Download certificate</button></p></div>`).join('')}</div>`:'<p>Finish every lesson of a course to earn your certificate.</p>';
+ if(t==='frm'){const mf=(jget('geopramForms.v1',{forms:[]}).forms||[]).filter(f=>f.owner===me.email);h=`<p><a class="btn btn--red" href="forms/dashboard.html">Open Forms studio</a></p><p class="mut" style="margin:12px 0">Build surveys, registrations and quizzes. Each form gets a unique code and goes live after Geopram approves it. Learners sign in and enter the code to respond.</p>`+(mf.length?`<table><tr><th>Form</th><th>Code</th><th>Approval</th><th>Status</th></tr>${mf.map(f=>`<tr><td>${esc(f.title)}</td><td><b>${esc(f.code)}</b></td><td>${esc(f.approval)}</td><td>${esc(f.status)}</td></tr>`).join('')}</table>`:'<p>You have no forms yet.</p>')}
  if(t==='mine')h=mine.length?`<div class="grid">${mine.map(c=>`<div>${card(c)}<p style="margin-top:8px;display:flex;gap:8px"><button class="btn btn--ink" data-ed="${c.id}" style="min-height:42px">Edit</button><button class="btn btn--line" data-del="${c.id}" style="min-height:42px">Delete</button></p></div>`).join('')}</div>`:'<p>You have no courses yet. Open <b>Create course</b> to publish your first one.</p>';
  if(t==='stu')h=roster.length?`<table><tr><th>Student</th><th>Course</th><th>Progress</th><th>Paid</th></tr>${roster.map(r=>`<tr><td>${esc(r.n)}<br><small class="mut">${esc(r.em)}</small></td><td>${esc(r.c.t)}</td><td>${r.p}%</td><td>${kes(r.paid)}</td></tr>`).join('')}</table>`:'<p>No students have enrolled in your courses yet.</p>';
  if(t==='earn')h=`<div class="stats" style="margin:0 0 18px"><div style="background:var(--mist)"><b style="color:var(--ink)">${kes(gross)||'KES 0'}</b><span style="color:var(--slate)">Gross sales</span></div><div style="background:var(--mist)"><b style="color:var(--ink)">${kes(earn)||'KES 0'}</b><span style="color:var(--slate)">Your share (${TS}%)</span></div><div style="background:var(--mist)"><b style="color:var(--ink)">${kes(gross-earn)||'KES 0'}</b><span style="color:var(--slate)">Geopram commission</span></div></div>${roster.filter(r=>r.paid).length?`<table><tr><th>Student</th><th>Course</th><th>Amount</th><th>Receipt</th></tr>${roster.filter(r=>r.paid).map(r=>`<tr><td>${esc(r.n)}</td><td>${esc(r.c.t)}</td><td>${kes(r.paid)}</td><td>${r.rc}</td></tr>`).join('')}</table>`:'<p>Sales appear here as students pay.</p>'}<p class="mut" style="margin-top:12px">Demo figures from this browser. With a backend, payouts go to your M-PESA automatically.</p>`;
- if(t==='new'){const ed=mine.find(c=>c.id===window._ed)||{};h=`<form id="cf" class="dl" style="max-width:720px;padding:0" novalidate><h3>${ed.id?'Edit course':'Create a course'}</h3>
+ if(t==='new'&&(users()[me.email]||{}).ap===0)h='<p><b>Your tutor account is awaiting approval.</b> You can publish courses as soon as Geopram approves it.</p>';else if(t==='new'){const ed=mine.find(c=>c.id===window._ed)||{};h=`<form id="cf" class="dl" style="max-width:720px;padding:0" novalidate><h3>${ed.id?'Edit course':'Create a course'}</h3>
  <div><label for="c1">Course title</label><input id="c1" value="${esc(ed.t||'')}"></div>
  <div class="two" style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><div><label for="c2">Category</label><select id="c2">${Object.entries(CFG.cats).map(([k,v])=>`<option value="${k}" ${ed.c===k?'selected':''}>${v}</option>`).join('')}</select></div><div><label for="c3">Price in KES (0 = free)</label><input id="c3" type="number" min="0" value="${ed.p??0}"></div></div>
  <div><label for="c4">Duration</label><input id="c4" placeholder="4 weeks" value="${esc(ed.d||'')}"></div>
@@ -410,7 +411,9 @@ function dash(t){$('#pub').hidden=true;$('#dash').hidden=false;$('#nav').classLi
   const U=users(),nu={...U[me.email],n,ph};['loc','org','job','fmt','int','bio'].concat(T?['exp','yrs','qual']:[]).forEach(k=>nu[k]=g(k));U[me.email]=nu;jset('gp_users',U);me={...me,n,ph};jset('gp_me',me);
   jset('gp_courses',jget('gp_courses',[]).map(c=>c.o===me.email?{...c,by:n}:c));window._pe=false;toast('Profile saved.');drawCat();dash('prof')}}}
  $('#dv').innerHTML=h;after();const ap=$('#dt [aria-pressed=true]');if(ap&&ap.scrollIntoView)ap.scrollIntoView({inline:'center',block:'nearest'})}
+function tutorPortal(){if(me&&me.role==='tutor')dash('mine');else if(me)toast('This is a learner account. Sign up with a tutor account to teach.');else{auth('up');$('#a5').value='tutor'}}
+$('#tutorL').onclick=e=>{e.preventDefault();tutorPortal()};addEventListener('hashchange',()=>{if(location.hash==='#tutor')tutorPortal()});if(location.hash==='#tutor')setTimeout(tutorPortal,250);
 $('#dv').addEventListener('click',e=>{const x=e.target.closest('[data-ed]'),y=e.target.closest('[data-del]');if(x){window._ed=x.dataset.ed;dash('new')}if(y&&confirm('Delete this course?')){jset('gp_courses',jget('gp_courses',[]).filter(c=>c.id!==y.dataset.del));drawCat();dash('mine')}});
 </script><!--gp-fab--><style>.gp-fab{position:fixed;right:16px;bottom:16px;z-index:90;display:flex;flex-direction:column;gap:10px}.gp-fab a{display:grid;place-items:center;width:56px;height:56px;color:#fff;box-shadow:0 8px 22px rgba(17,21,27,.35);clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%)}.gp-fab a:hover{filter:brightness(.9)}.gp-fab svg{width:26px;height:26px}</style>
-<script>/* EDIT: your business phone in international format, no plus or spaces */const GP_PHONE='254700000000';
+<script>/* EDIT: your business phone in international format, no plus or spaces */const GP_PHONE='254702781490';
 (function(){const d=document.createElement('div');d.className='gp-fab';d.innerHTML='<a href="https://wa.me/'+GP_PHONE+'?text='+encodeURIComponent('Hello Geopram Technologies, I would like to know more.')+'" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" style="background:#25D366"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.2 14.2c-.2.6-1.300 1.200-1.800 1.200-.5.1-1 .2-3.300-.7-2.800-1.100-4.600-4-4.700-4.200-.1-.2-1.100-1.500-1.100-2.800s.7-2 1-2.300c.2-.3.500-.3.700-.3h.5c.2 0 .4 0 .6.500.2.600.8 2 .9 2.100.1.1.1.3 0 .5-.1.2-.2.300-.3.500l-.4.500c-.1.100-.3.300-.1.600.2.300.8 1.300 1.700 2.100 1.200 1 2.100 1.300 2.400 1.500.3.100.5.100.6-.1l.9-1.100c.2-.3.400-.2.600-.1l1.900.9c.3.100.5.200.5.300.1.200.1.800-.1 1.400z"/></svg></a><a href="tel:+'+GP_PHONE+'" aria-label="Call Geopram Technologies" style="background:#E30613"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.500 1.500a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg></a>';document.body.appendChild(d)})();</script></body></html>
