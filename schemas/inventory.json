@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Inventory",
+  "type": "object",
+  "properties": {
+    "product_id": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer"
+    },
+    "location": {
+      "type": "string"
+    },
+    "reorder_level": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": true
+}

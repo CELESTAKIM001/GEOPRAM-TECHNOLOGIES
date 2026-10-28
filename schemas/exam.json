@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Exam",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "course_id": {
+      "type": "string"
+    },
+    "exam_date": {
+      "type": "string"
+    },
+    "total_marks": {
+      "type": "number"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Certificate",
+  "type": "object",
+  "properties": {
+    "certificate_number": {
+      "type": "string"
+    },
+    "recipient_name": {
+      "type": "string"
+    },
+    "course_name": {
+      "type": "string"
+    },
+    "issue_date": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

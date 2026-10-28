@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Grade",
+  "type": "object",
+  "properties": {
+    "student_id": {
+      "type": "string"
+    },
+    "exam_id": {
+      "type": "string"
+    },
+    "marks": {
+      "type": "number"
+    },
+    "grade": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}
