@@ -252,7 +252,15 @@ def test_service(service):
             with socket.create_connection((host,port),timeout=5): pass
             result.update(ok=True,details=f'TCP connection to {host}:{port} succeeded. This does not send an email or verify credentials.')
         elif service=='daraja':
-            result.update(ok=bool(os.getenv('CONSUMER_KEY') and os.getenv('CONSUMER_SECRET')),details='Credentials are present.' if os.getenv('CONSUMER_KEY') and os.getenv('CONSUMER_SECRET') else 'Daraja credentials are not configured; no live payment request was sent.')
+            consumer_key=os.getenv('MPESA_CONSUMER_KEY') or os.getenv('CONSUMER_KEY','')
+            consumer_secret=os.getenv('MPESA_CONSUMER_SECRET') or os.getenv('CONSUMER_SECRET','')
+            shortcode=os.getenv('MPESA_SHORTCODE') or os.getenv('SHORTCODE','')
+            till_number=os.getenv('MPESA_TILL_NUMBER','')
+            passkey=os.getenv('MPESA_PASSKEY') or os.getenv('PASSKEY','')
+            callback_url=os.getenv('MPESA_CALLBACK_URL') or os.getenv('CALLBACK_URL','')
+            missing=[name for name,value in [('MPESA_CONSUMER_KEY',consumer_key),('MPESA_CONSUMER_SECRET',consumer_secret),('MPESA_SHORTCODE',shortcode),('MPESA_PASSKEY',passkey),('MPESA_CALLBACK_URL',callback_url)] if not value]
+            # A visible Till Number is optional for some Daraja products, but report it clearly.
+            result.update(ok=not missing, details=('Required Daraja configuration values are present. No live payment request was sent.' if not missing else 'Missing required configuration: '+', '.join(missing)+'. No live payment request was sent.'), till_number_configured=bool(till_number), environment=os.getenv('MPESA_ENVIRONMENT','production').lower())
         elif service in ('whatsapp','sms'):
             result.update(ok=bool(os.getenv('WHATSAPP_TOKEN') if service=='whatsapp' else os.getenv('SMS_API_KEY')),details='Provider credentials present.' if (os.getenv('WHATSAPP_TOKEN') if service=='whatsapp' else os.getenv('SMS_API_KEY')) else f'{service.upper()} provider credentials are not configured; no message was sent.')
         else: return jsonify(error='Unknown service. Try database, smtp, daraja, sms, whatsapp.'),400

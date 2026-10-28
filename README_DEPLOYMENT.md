@@ -11,6 +11,12 @@ Flask application with admin authentication, MongoDB-backed records/settings, ge
 5. Deploy and test `/health`, then visit `/login`. Admin dashboard: `/geopram-consoleQWERTYUIOP`.
 6. Configure custom domains in Vercel project settings. Domain/subdomain DNS and SSL are managed by your DNS provider/Vercel, not by the app.
 
+## M-Pesa Till number configuration
+- Add `MPESA_TILL_NUMBER` for the visible business Till Number, if applicable.
+- Also configure `MPESA_SHORTCODE`, `MPESA_CONSUMER_KEY`, `MPESA_CONSUMER_SECRET`, `MPESA_PASSKEY`, `MPESA_CALLBACK_URL`, and `MPESA_ENVIRONMENT` for the relevant Daraja product.
+- The Till Number and Daraja shortcode are separate settings because the correct shortcode depends on the product/account setup. Confirm values in the Safaricom Daraja portal before production.
+- The admin Daraja tester checks required settings only; it does not perform a live payment.
+
 ## Important operational notes
 - Vercel functions are stateless and have execution/time limits. MongoDB is the persistent store; do not write persistent uploads to local disk.
 - `KENYA_ONLY_MODE=true` uses Vercel's `x-vercel-ip-country` header. It is disabled by default because proxies and missing headers can create false blocks. Keep admin recovery access in mind before enabling it.
