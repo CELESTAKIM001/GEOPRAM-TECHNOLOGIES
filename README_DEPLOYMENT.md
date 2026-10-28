@@ -11,12 +11,6 @@ Flask application with admin authentication, MongoDB-backed records/settings, ge
 5. Deploy and test `/health`, then visit `/login`. Admin dashboard: `/geopram-consoleQWERTYUIOP`.
 6. Configure custom domains in Vercel project settings. Domain/subdomain DNS and SSL are managed by your DNS provider/Vercel, not by the app.
 
-## M-Pesa Till number configuration
-- Add `MPESA_TILL_NUMBER` for the visible business Till Number, if applicable.
-- Also configure `MPESA_SHORTCODE`, `MPESA_CONSUMER_KEY`, `MPESA_CONSUMER_SECRET`, `MPESA_PASSKEY`, `MPESA_CALLBACK_URL`, and `MPESA_ENVIRONMENT` for the relevant Daraja product.
-- The Till Number and Daraja shortcode are separate settings because the correct shortcode depends on the product/account setup. Confirm values in the Safaricom Daraja portal before production.
-- The admin Daraja tester checks required settings only; it does not perform a live payment.
-
 ## Important operational notes
 - Vercel functions are stateless and have execution/time limits. MongoDB is the persistent store; do not write persistent uploads to local disk.
 - `KENYA_ONLY_MODE=true` uses Vercel's `x-vercel-ip-country` header. It is disabled by default because proxies and missing headers can create false blocks. Keep admin recovery access in mind before enabling it.
@@ -24,3 +18,8 @@ Flask application with admin authentication, MongoDB-backed records/settings, ge
 - Export supports JSON, XML, HTML, CSV and XLSX. Import currently accepts JSON only, by design; review/convert other formats before importing. Exports are capped at 100,000 documents per collection. Protect exports as sensitive data.
 - Maintenance mode and landing tagline are controlled from the admin panel. The current maintenance scope is global; granular per-module maintenance, campaign scheduling, bulk mail, automated SMS/WhatsApp, payment callbacks, and full school workflows need provider-specific implementation and acceptance testing before production use.
 - Before production: enable MFA/SSO or add a second factor, use a password manager, rotate any credentials previously shared in chat, test restore from Atlas backups, set rate limiting/WAF, review privacy/consent for student data, and commission a security review.
+
+
+## SMS and WhatsApp credentials
+
+See `modules/sms_whatsapp_setup.md` for the button-by-button Africa's Talking and Meta setup, required environment variables, Vercel steps, and diagnostics. The admin Verify buttons validate credentials only; they do not send messages.

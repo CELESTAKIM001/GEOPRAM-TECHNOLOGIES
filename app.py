@@ -10,6 +10,7 @@ from pymongo.errors import PyMongoError
 from dotenv import load_dotenv
 import os, secrets, json, csv, io, gzip, xml.etree.ElementTree as ET, html, smtplib, ssl, socket
 from email.message import EmailMessage
+from geopram.communications import test_sms_credentials, test_whatsapp_credentials
 
 load_dotenv()
 app=Flask(__name__, template_folder='templates', static_folder='static')
@@ -252,17 +253,13 @@ def test_service(service):
             with socket.create_connection((host,port),timeout=5): pass
             result.update(ok=True,details=f'TCP connection to {host}:{port} succeeded. This does not send an email or verify credentials.')
         elif service=='daraja':
-            consumer_key=os.getenv('MPESA_CONSUMER_KEY') or os.getenv('CONSUMER_KEY','')
-            consumer_secret=os.getenv('MPESA_CONSUMER_SECRET') or os.getenv('CONSUMER_SECRET','')
-            shortcode=os.getenv('MPESA_SHORTCODE') or os.getenv('SHORTCODE','')
-            till_number=os.getenv('MPESA_TILL_NUMBER','')
-            passkey=os.getenv('MPESA_PASSKEY') or os.getenv('PASSKEY','')
-            callback_url=os.getenv('MPESA_CALLBACK_URL') or os.getenv('CALLBACK_URL','')
-            missing=[name for name,value in [('MPESA_CONSUMER_KEY',consumer_key),('MPESA_CONSUMER_SECRET',consumer_secret),('MPESA_SHORTCODE',shortcode),('MPESA_PASSKEY',passkey),('MPESA_CALLBACK_URL',callback_url)] if not value]
-            # A visible Till Number is optional for some Daraja products, but report it clearly.
-            result.update(ok=not missing, details=('Required Daraja configuration values are present. No live payment request was sent.' if not missing else 'Missing required configuration: '+', '.join(missing)+'. No live payment request was sent.'), till_number_configured=bool(till_number), environment=os.getenv('MPESA_ENVIRONMENT','production').lower())
-        elif service in ('whatsapp','sms'):
-            result.update(ok=bool(os.getenv('WHATSAPP_TOKEN') if service=='whatsapp' else os.getenv('SMS_API_KEY')),details='Provider credentials present.' if (os.getenv('WHATSAPP_TOKEN') if service=='whatsapp' else os.getenv('SMS_API_KEY')) else f'{service.upper()} provider credentials are not configured; no message was sent.')
+            result.update(ok=bool(os.getenv('CONSUMER_KEY') and os.getenv('CONSUMER_SECRET')),details='Credentials are present.' if os.getenv('CONSUMER_KEY') and os.getenv('CONSUMER_SECRET') else 'Daraja credentials are not configured; no live payment request was sent.')
+        elif service=='sms':
+            ok, details = test_sms_credentials()
+            result.update(ok=ok, details=details)
+        elif service=='whatsapp':
+            ok, details = test_whatsapp_credentials()
+            result.update(ok=ok, details=details)
         else: return jsonify(error='Unknown service. Try database, smtp, daraja, sms, whatsapp.'),400
     except Exception as e: result['details']=str(e)[:300]
     try: db().api_checks.insert_one(result.copy())
@@ -312,3 +309,29 @@ def server_error(e):
     return render_template('error.html',code=500,message='Something went wrong. Please try again.'),500
 
 if __name__=='__main__': app.run(host='0.0.0.0',port=int(os.getenv('PORT','5000')),debug=os.getenv('FLASK_DEBUG','false').lower()=='true')
+
+
+# Meta WhatsApp Cloud API webhook verification and event receiver.
+@app.route('/api/whatsapp/webhook', methods=['GET', 'POST'])
+def whatsapp_webhook():
+    if request.method == 'GET':
+        mode = request.args.get('hub.mode', '')
+        token = request.args.get('hub.verify_token', '')
+        challenge = request.args.get('hub.challenge', '')
+        expected = os.getenv('WHATSAPP_VERIFY_TOKEN', '')
+        if mode == 'subscribe' and expected and secrets.compare_digest(token, expected):
+            return challenge, 200, {'Content-Type': 'text/plain; charset=utf-8'}
+        return jsonify(error='Webhook verification failed'), 403
+
+    # Validate Meta's signature when the app secret is configured.
+    app_secret = os.getenv('WHATSAPP_APP_SECRET', '')
+    signature = request.headers.get('X-Hub-Signature-256', '')
+    if app_secret:
+        import hmac, hashlib
+        expected_signature = 'sha256=' + hmac.new(app_secret.encode('utf-8'), request.get_data(), hashlib.sha256).hexdigest()
+        if not signature or not hmac.compare_digest(signature, expected_signature):
+            return jsonify(error='Invalid webhook signature'), 401
+    payload = request.get_json(silent=True) or {}
+    # Acknowledge events quickly. Business-specific message processing can be added here.
+    app.logger.info('WhatsApp webhook event received; object=%s', payload.get('object', 'unknown'))
+    return jsonify(status='received'), 200
